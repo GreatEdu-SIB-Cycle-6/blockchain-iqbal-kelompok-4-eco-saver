@@ -20,6 +20,16 @@ const App = () => {
           <div className="w-[600px] text-white text-[32px] font-light font-['Poppins']">
             Donate your Crypto for a Sustainable Environment.
           </div>
+          <div className="w-[229px] mt-10 h-[70px] px-8 py-[22px] bg-gradient-to-b from-blue-500 to-blue-950 rounded-lg justify-center items-center gap-2.5 inline-flex">
+            <div className="text-center text-white text-xl font-medium font-['Space Grotesk']">
+              Request Funding
+            </div>
+          </div>
+          <div className="w-[161px] ml-10 h-[70px] px-8 py-[22px] bg-gradient-to-b from-slate-300 to-slate-500 rounded-lg justify-center items-center gap-2.5 inline-flex">
+            <div className="text-center text-black text-xl font-medium font-['Space Grotesk']">
+              Campaign
+            </div>
+          </div>
         </div>
       </div>
     </div>
