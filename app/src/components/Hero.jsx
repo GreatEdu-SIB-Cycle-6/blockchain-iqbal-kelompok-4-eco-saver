@@ -1,7 +1,10 @@
 import React from "react";
 import Typed from "react-typed";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="text-white">
       <div className="max-w-[1200px] mt-[-150px] w-full h-screen mx-auto text-center flex flex-col justify-center">
@@ -23,10 +26,12 @@ const Hero = () => {
             />{" "}
             for a Sustainable Environment.
           </p>
-          <button className="text-center text-white sm:text-xl sm:p-4 p-1 whitespace-nowrap font-medium text-sm font-['Poppins'] md:w-[200px] sm:w-[90px] mx-auto py-3 my-6 bg-gradient-to-b from-blue-500 to-blue-950 rounded-lg justify-center items-center  inline-flex">
+          <button className="text-center text-white sm:text-xl sm:p-4 p-1 whitespace-nowrap font-medium text-sm font-['Poppins'] md:w-[200px] sm:w-[90px] mx-auto py-3 my-6 bg-gradient-to-b from-blue-500 to-blue-950 rounded-lg justify-center items-center inline-flex"
+          onClick={() => {navigate('/request-funding', {replace:true})}}>
             Request Funding
           </button>
-          <button className=" ml-4 text-center text-white sm:text-xl sm:p-4 p-1 font-medium text-sm font-['Poppins'] md:w-[200px] sm:w-[90px] mx-auto py-3 my-6 bg-gradient-to-r from-green-400 to-green-600 rounded-lg justify-center items-center  inline-flex">
+          <button className=" ml-4 text-center text-white sm:text-xl sm:p-4 p-1 font-medium text-sm font-['Poppins'] md:w-[200px] sm:w-[90px] mx-auto py-3 my-6 bg-gradient-to-r from-green-400 to-green-600 rounded-lg justify-center items-center inline-flex"
+          onClick={() => {navigate('/campaign', {replace:true})}}>
             Campaign
           </button>
         </div>

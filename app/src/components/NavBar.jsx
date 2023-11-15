@@ -16,13 +16,23 @@ const NavBar = () => {
         EcoSaver
       </h1>
       <ul className="hidden md:flex ">
-        <li className="p-4 font-['Poppins']">Campaign</li>
-        <li className="p-4 whitespace-nowrap  font-['Poppins']">
-          Request Funding
+        <Link to="/campaign">
+          <li className="p-4 font-['Poppins']">Campaign</li>
+        </Link>
+        <Link to="/request-funding">
+          <li className="p-4 whitespace-nowrap  font-['Poppins']">
+            Request Funding
+          </li>
+        </Link>
+        <Link to="/rewards">
+          <li className="p-4 font-['Poppins']">Rewards</li>
+        </Link>
+        <Link to="/about">
+          <li className="p-4 font-['Poppins']">About</li>
+        </Link>
+        <li className="ml-2 whitespace-nowrap">
+          <ConnectWallet />
         </li>
-        <li className="p-4 font-['Poppins']">Rewards</li>
-        <li className="p-4 font-['Poppins']">About</li>
-        <li className="ml-2 whitespace-nowrap"><ConnectWallet/></li>
       </ul>
       <div onClick={handleNav} className="block md:hidden">
         {!nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
@@ -44,7 +54,9 @@ const NavBar = () => {
           </li>
           <li className="p-4 border-b border-gray-600 ">Rewards</li>
           <li className="p-4 border-b border-gray-600">About</li>
-          <li className="p-4 mr-2 whitespace-nowrap"><ConnectWallet/></li>
+          <li className="p-4 mr-2 whitespace-nowrap">
+            <ConnectWallet />
+          </li>
         </ul>
       </div>
     </div>

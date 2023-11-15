@@ -18,17 +18,16 @@ const App = () => {
       <Navbar />
       <ParticleBackground />
       <Hero />
-      <Footer/>
+      <Footer />
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/campaign" element={<Campaign />} />
-          <Route path="/campaign-details/:id" element={<CampaignDetails />} />
-          <Route path="/request-funding" element={<RequestFunding />} />
-          <Route path="/approve-funding" element={<ApproveFunding />} />
-          <Route path="/rewards" element={<Rewards />} />
-          <Route path="/about" element={<About />} /> */}
+        <Route path="/campaign" element={<Campaign />} />
+        {/* <Route path="/campaign-details/:id" element={<CampaignDetails />} /> */}
+        <Route path="/request-funding" element={<RequestFunding />} />
+        <Route path="/approve-funding" element={<ApproveFunding />} />
+        <Route path="/rewards" element={<Rewards />} />
+        <Route path="/about" element={<About />} />
       </Routes>
-      
     </div>
   );
 };
