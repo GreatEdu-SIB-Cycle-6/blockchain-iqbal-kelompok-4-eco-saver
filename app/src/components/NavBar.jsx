@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 
 const NavBar = () => {
-  const navigate = useNavigate();
   const [nav, setNav] = useState(false);
 
   const handleNav = () => {
@@ -12,9 +11,11 @@ const NavBar = () => {
   };
   return (
     <div className="flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white">
-      <h1 className="w-full text-2xl font-['Poppins'] font-normal text-white mt-1">
-        EcoSaver
-      </h1>
+      <Link to="/">
+        <h1 className="w-full text-2xl font-['Poppins'] font-normal text-white mt-1">
+          EcoSaver
+        </h1>
+      </Link>
       <ul className="hidden md:flex ">
         <Link to="/campaign">
           <li className="p-4 font-['Poppins']">Campaign</li>

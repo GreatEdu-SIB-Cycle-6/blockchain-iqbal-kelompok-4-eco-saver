@@ -1,7 +1,7 @@
 import React from "react";
-import { BrowserRouter , Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-import { Navbar, Hero, Footer } from "./components";
+import { Navbar } from "./components";
 import {
   Home,
   Campaign,
@@ -10,15 +10,11 @@ import {
   Rewards,
   About,
 } from "./pages";
-import ParticleBackground from "./components/ParticleBackground";
 
 const App = () => {
   return (
     <div>
       <Navbar />
-      <ParticleBackground />
-      <Hero />
-      <Footer />  
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/campaign" element={<Campaign />} />
