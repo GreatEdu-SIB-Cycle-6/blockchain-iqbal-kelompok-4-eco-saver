@@ -48,13 +48,13 @@ const NavBar = () => {
         <h1 className="w-full text-2xl font-normal font-['Poppins'] text-white m-4">
           EcoSaver
         </h1>
-        <ul className="p-4 uppercase md:hidden">
-          <li className="p-4 border-b border-gray-600 ">Campaign</li>
-          <li className="p-4 whitespace-nowrap border-b border-gray-600 ">
+        <ul className="p-4 md:hidden">
+          <Link to="campaign"><li className="p-4 border-b border-gray-600 ">Campaign</li></Link>
+          <Link to="request-funding"><li className="p-4 whitespace-nowrap border-b border-gray-600 ">
             Request Funding
-          </li>
-          <li className="p-4 border-b border-gray-600 ">Rewards</li>
-          <li className="p-4 border-b border-gray-600">About</li>
+          </li></Link>
+          <Link to="rewards"><li className="p-4 border-b border-gray-600 ">Rewards</li></Link>
+          <Link to="about"><li className="p-4 border-b border-gray-600">About</li></Link>
           <li className="p-4 mr-2 whitespace-nowrap">
             <ConnectWallet />
           </li>

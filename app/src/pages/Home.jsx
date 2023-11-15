@@ -1,5 +1,5 @@
 import React from "react";
-import { Hero, Footer} from "../components";
+import { Hero } from "../components";
 
 import ParticleBackground from "../components/ParticleBackground";
 
@@ -9,7 +9,6 @@ const Home = () => {
     <div>
       <ParticleBackground/>
       <Hero />
-      <Footer />
     </div>
   );
 };
