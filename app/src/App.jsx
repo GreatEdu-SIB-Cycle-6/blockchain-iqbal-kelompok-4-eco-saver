@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { Navbar, Hero } from "./components";
+import { Navbar, Hero, Footer } from "./components";
 import {
   Home,
   Campaign,
@@ -18,6 +18,7 @@ const App = () => {
       <Navbar />
       <ParticleBackground />
       <Hero />
+      <Footer/>
       <Routes>
         <Route path="/" element={<Home />} />
         {/* <Route path="/campaign" element={<Campaign />} />
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/rewards" element={<Rewards />} />
           <Route path="/about" element={<About />} /> */}
       </Routes>
+      
     </div>
   );
 };
