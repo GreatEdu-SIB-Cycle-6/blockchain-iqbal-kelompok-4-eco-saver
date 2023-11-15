@@ -64,24 +64,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-
-{
-  /* <div className="flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6 text-white">
-<ul className="flex mt-9 py-5 px-7 space-x-40 text-white text-lg font-normal font-['Poppins']">
-  <li>
-    <Link to="/campaign">Campaign</Link>
-  </li>
-  <li>
-    <Link to="/request-funding">Request Funding</Link>
-  </li>
-  <li>
-    <Link to="/rewards">Rewards</Link>
-  </li>
-  <li>
-    <Link to="/about">About</Link>
-  </li>
-</ul>
-<ConnectWallet />
-</div>
-); */
-}
