@@ -1,7 +1,11 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+
+interface IReward {
+    function recordDonation(address donator, uint256 amount) external;
+}
 
 contract CrowdFunding is Ownable {
     struct Campaign {
@@ -11,28 +15,24 @@ contract CrowdFunding is Ownable {
         uint256 target;
         uint256 deadline;
         uint256 amountCollected;
+        uint256 storedAmount;
         string image;
         address[] donators;
         uint256[] donations;
     }
 
-    Reward public reward;
-
-    constructor(address payable _rewardContract) Ownable(msg.sender) {
-        reward = Reward(_rewardContract);
-        admin[msg.sender] = true;
-    }
-
+    IReward public reward;
     mapping (address => bool) public admin;
-
+    mapping(uint256 => Campaign) private requestList;
+    mapping(uint256 => Campaign) private campaigns;
+    uint256 private numberOfRequest = 0;
+    uint256 private numberOfCampaigns = 0;
     uint256 public fundLocked;
 
-    // membuat request list
-    mapping(uint256 => Campaign) public requestList;
-    uint256 public numberOfRequest = 0;
-
-    mapping(uint256 => Campaign) public campaigns;
-    uint256 public numberOfCampaigns = 0;
+    constructor(address payable _rewardContract) Ownable(msg.sender) {
+        reward = IReward(_rewardContract);
+        admin[msg.sender] = true;
+    }
 
     receive() external payable { }
 
@@ -73,7 +73,7 @@ contract CrowdFunding is Ownable {
         return numberOfCampaigns - 1;
     }
 
-    // Approve campaign from request list
+    // Approve campaign from request list then create the campaign
     function approveRequest(uint256 _id) public {
         require(admin[msg.sender] == true, "You are not admin");
         require(_id <= numberOfRequest && _id >= 0, "Campaign not exist");
@@ -84,6 +84,7 @@ contract CrowdFunding is Ownable {
         delete requestList[_id];
     }
 
+    // Donate funds then record amount into Reward contract
     function donateToCampaign(uint256 _id) public payable {
         uint256 amount = msg.value;
 
@@ -98,21 +99,34 @@ contract CrowdFunding is Ownable {
 
         fundLocked += amount; // mencatat donasi yang terkumpul
         campaign.amountCollected += amount;
+        campaign.storedAmount += amount;
         reward.recordDonation(msg.sender, amount);
     }
 
-    // Release funding for campaign
+    // Release funds to the campaign owner
     function releaseFunds(uint256 _id) public payable {
+        require(admin[msg.sender] == true, "Only admin can release funds");
+
         address campaignOwner = campaigns[_id].owner;
-        uint256 amountCollected = campaigns[_id].amountCollected;
+        uint256 _storedAmount = campaigns[_id].storedAmount;
 
-        require(campaignOwner != address(0));
+        require(campaignOwner != address(0), "Can not send to address zero");
+        require(_storedAmount != 0, "No funds can be released");
 
-        (bool sent, ) = payable(campaignOwner).call{value: amountCollected}("");
+        (bool sent, ) = payable(campaignOwner).call{value: _storedAmount}("");
 
         require(sent, "Release of funds failed");
 
-        fundLocked -= amountCollected;
+        fundLocked -= _storedAmount;
+        campaigns[_id].storedAmount = 0;
+    }
+
+    function addAdmin(address _newAdmin) external onlyOwner {
+        admin[_newAdmin] = true;
+    }
+
+    function removeAdmin(address _admin) external onlyOwner {
+        delete admin[_admin];
     }
 
     function getDonators(uint256 _id) view public returns (address[] memory, uint256[] memory) {
@@ -148,57 +162,5 @@ contract CrowdFunding is Ownable {
         }
 
         return allRequests;
-    }
-}
-
-contract Reward is Ownable{
-    enum Rarity {COMMON, UNCOMMON, RARE}
-    struct Item {
-        string name;
-        string description;
-        Rarity rarity;
-        uint256 minAmount;
-        uint256 remainingItem;
-        string image;
-        bool isNft;
-    }
-
-    constructor() Ownable(msg.sender) {
-        
-    }
-    mapping (uint256 => Item) public rewardList;
-    uint256 public numberOfReward;
-    mapping (address => uint256) public donatorData;
-    // mapping (address => Item[]) public claimHistory;
-
-    // Menambahkan item
-    function addItem(string calldata _name, string calldata _description, Rarity _rarity, uint256 _minAmount, uint256 _remainingItem, string calldata _image, bool _isNft) public onlyOwner returns(uint256) {
-        Item storage item = rewardList[numberOfReward];
-
-        item.name = _name;
-        item.description = _description;
-        item.rarity = _rarity;
-        item.minAmount = _minAmount;
-        item.remainingItem = _remainingItem;
-        item.image = _image;
-        item.isNft = _isNft;
-
-        numberOfReward++;
-        return numberOfReward - 1;
-    }
-
-    // Catat donasi dari kontrak Crowdfunding
-    function recordDonation(address donator, uint256 amount) external {
-        donatorData[donator] += amount;
-    }
-
-    function claimReward(uint256 _id) public {
-        uint256 minAmount = rewardList[_id].minAmount;
-        address donator = msg.sender;
-
-        require(donatorData[donator] >= minAmount , "The amount of your donation is insufficient.");
-
-        donatorData[donator] -= minAmount;
-        rewardList[_id].remainingItem -= 1;
     }
 }
