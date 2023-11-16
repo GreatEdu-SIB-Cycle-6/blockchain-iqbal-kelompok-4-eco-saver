@@ -19,6 +19,7 @@ contract CrowdFunding is Ownable {
         string image;
         address[] donators;
         uint256[] donations;
+        bool isReleased;
     }
 
     IReward public reward;
@@ -29,7 +30,7 @@ contract CrowdFunding is Ownable {
     uint256 private numberOfCampaigns = 0;
     uint256 public fundLocked;
 
-    constructor(address payable _rewardContract) Ownable(msg.sender) {
+    constructor(address payable _rewardContract) Ownable() {
         reward = IReward(_rewardContract);
         admin[msg.sender] = true;
     }
@@ -119,6 +120,7 @@ contract CrowdFunding is Ownable {
 
         fundLocked -= _storedAmount;
         campaigns[_id].storedAmount = 0;
+        campaigns[_id].isReleased = true;
     }
 
     function addAdmin(address _newAdmin) external onlyOwner {
@@ -139,7 +141,7 @@ contract CrowdFunding is Ownable {
         for(uint i = 0; i < numberOfCampaigns; i++) {
             Campaign storage item = campaigns[i];
 
-            if (item.deadline > block.timestamp) {
+            if (item.isReleased == false) {
                 allCampaigns[i] = item;    
             }
             
