@@ -1,14 +1,28 @@
 import React, { useState } from "react";
 import { ConnectWallet } from "@thirdweb-dev/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 
 const NavBar = () => {
   const [nav, setNav] = useState(false);
+  const [activeNavItem, setActiveNavItem] = useState("");
 
   const handleNav = () => {
     setNav(!nav);
   };
+
+  const handleNavItemClick = (index) => {
+    setActiveNavItem(index);
+  };
+
+  const navItems = [
+    { path: "/", label: "Home" },
+    { path: "/campaign", label: "Campaign" },
+    { path: "/request-funding", label: "Request Funding" },
+    { path: "/rewards", label: "Rewards" },
+    { path: "/about", label: "About" },
+  ];
+
   return (
     <div className="flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white">
       <Link to="/">
@@ -17,20 +31,18 @@ const NavBar = () => {
         </h1>
       </Link>
       <ul className="hidden md:flex ">
-        <Link to="/campaign">
-          <li className="p-4 font-['Poppins']">Campaign</li>
-        </Link>
-        <Link to="/request-funding">
-          <li className="p-4 whitespace-nowrap  font-['Poppins']">
-            Request Funding
-          </li>
-        </Link>
-        <Link to="/rewards">
-          <li className="p-4 font-['Poppins']">Rewards</li>
-        </Link>
-        <Link to="/about">
-          <li className="p-4 font-['Poppins']">About</li>
-        </Link>
+        {navItems.map((item, index) => (
+          <Link to={item.path} key={index}>
+            <li
+              onClick={() => handleNavItemClick(index)}
+              className={`p-4 font-['Poppins'] text-[#BDBDBD]${
+                activeNavItem === index ? "text-white" : ""
+              }`}
+            >
+              {item.label}
+            </li>
+          </Link>
+        ))}
         <li className="ml-2 whitespace-nowrap">
           <ConnectWallet />
         </li>
@@ -49,12 +61,18 @@ const NavBar = () => {
           EcoSaver
         </h1>
         <ul className="p-4 md:hidden">
-          <Link to="campaign"><li className="p-4 border-b border-gray-600 ">Campaign</li></Link>
-          <Link to="request-funding"><li className="p-4 whitespace-nowrap border-b border-gray-600 ">
-            Request Funding
-          </li></Link>
-          <Link to="rewards"><li className="p-4 border-b border-gray-600 ">Rewards</li></Link>
-          <Link to="about"><li className="p-4 border-b border-gray-600">About</li></Link>
+          {navItems.map((item, index) => (
+            <Link to={item.path} key={index}>
+              <li
+                onClick={() => handleNavItemClick(index)}
+                className={`p-4 font-['Poppins'] text-[#BDBDBD]${
+                  activeNavItem === index ? "text-white" : ""
+                }`}
+              >
+                {item.label}
+              </li>
+            </Link>
+          ))}
           <li className="p-4 mr-2 whitespace-nowrap">
             <ConnectWallet />
           </li>

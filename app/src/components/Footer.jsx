@@ -7,6 +7,8 @@ import {
   FaTwitterSquare,
 } from "react-icons/fa";
 
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <div className="max-w-[1240px] mx-auto py-16 px-4 grid lg:grid-cols-3 gap-8 text-gray-300">
@@ -20,19 +22,22 @@ const Footer = () => {
           assets for environmental sustainability.
         </p>
         <div className="flex space-x-3 md:w-[75%] my-6">
-          <FaFacebookSquare size={30} />
-          <FaInstagram size={30} />
-          <FaGithubSquare size={30} />
+          <Link to="https://github.com/GreatEdu-SIB-Cycle-6/blockchain-iqbal-kelompok-4-eco-saver.git">
+            <FaGithubSquare size={30} />
+          </Link>
         </div>
+        <div>Copyright &copy;2023 Team 4 Blockchain EcoSaver</div>
       </div>
       <div className="lg:col-span-2 flex justify-between ">
         <div>
           <h6 className="font-medium text-gray-400">CrowdFunding</h6>
           <ul>
-            <li className="py-2 text-sm">About</li>
-            <li className="py-2 text-sm">About</li>
-            <li className="py-2 text-sm">About</li>
-            <li className="py-2 text-sm">About</li>
+            <Link to="/about">
+              <li className="py-2 text-sm">About</li>
+            </Link>
+            <Link to="https://github.com/GreatEdu-SIB-Cycle-6/blockchain-iqbal-kelompok-4-eco-saver.git">
+              <li className="py-2 text-sm">Github</li>
+            </Link>
           </ul>
         </div>
         <div>
