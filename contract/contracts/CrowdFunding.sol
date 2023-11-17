@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -23,9 +23,10 @@ contract CrowdFunding is Ownable {
     }
 
     IReward public reward;
-    address[] public admins;
+    address[] private admins;
     mapping (address => uint256) private adminIndex;
     mapping (address => bool) private adminStatus;
+    mapping (address => uint) public distributeFeeFailed;
     mapping(uint256 => Campaign) private requestList;
     mapping(uint256 => Campaign) private campaigns;
     uint256 private numberOfRequest = 0;
@@ -158,6 +159,26 @@ contract CrowdFunding is Ownable {
 
     function getAdminLength() public view returns (uint256) {
         return admins.length;
+    }
+
+    // distribute collected fee to admins
+    function distributeFee() external onlyOwner payable {
+        require(feeCollected > 0, "Nothing can be distributed");
+
+        uint256 _numOfAdmins = getAdminLength();
+        uint256 _amount = feeCollected / _numOfAdmins;
+
+        for (uint i = 0; i < _numOfAdmins; i++) {
+            address _admin = admins[i];
+
+            (bool success, ) = payable(_admin).call{value: _amount}("");
+
+            if (success) {
+                feeCollected -= _amount;
+            } else if(success != true){
+                distributeFeeFailed[_admin] += _amount;
+            }
+        }
     }
 
     function getDonators(uint256 _id) view public returns (address[] memory, uint256[] memory) {
