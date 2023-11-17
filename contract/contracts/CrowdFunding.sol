@@ -29,6 +29,7 @@ contract CrowdFunding is Ownable {
     uint256 private numberOfRequest = 0;
     uint256 private numberOfCampaigns = 0;
     uint256 public fundLocked;
+    uint256 public feeCollected;
 
     constructor(address payable _rewardContract) Ownable() {
         reward = IReward(_rewardContract);
@@ -108,13 +109,16 @@ contract CrowdFunding is Ownable {
     function releaseFunds(uint256 _id) public payable {
         require(admin[msg.sender] == true, "Only admin can release funds");
 
-        address campaignOwner = campaigns[_id].owner;
+        address _campaignOwner = campaigns[_id].owner;
         uint256 _storedAmount = campaigns[_id].storedAmount;
 
-        require(campaignOwner != address(0), "Can not send to address zero");
+        require(_campaignOwner != address(0), "Can not send to address zero");
         require(_storedAmount != 0, "No funds can be released");
 
-        (bool sent, ) = payable(campaignOwner).call{value: _storedAmount}("");
+        uint256 _amountAfterFee = _storedAmount * 95 / 100; // platform fee = 5%
+        feeCollected += _storedAmount - _amountAfterFee;
+
+        (bool sent, ) = payable(_campaignOwner).call{value: _amountAfterFee}("");
 
         require(sent, "Release of funds failed");
 
