@@ -142,7 +142,7 @@ contract CrowdFunding is Ownable {
     }
 
     function removeAdmin(address _admin) external onlyOwner {
-        require(isAdminExist(_admin), "Admin doesn't exist");
+        require(isAdminExist(_admin), "Admin does not exist");
 
         uint256 _indexToRemove = adminIndex[_admin]; // index of address that will be removed
         address _adminToMove = admins[getAdminLength() - 1]; // get the last admin address
