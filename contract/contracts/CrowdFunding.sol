@@ -23,7 +23,9 @@ contract CrowdFunding is Ownable {
     }
 
     IReward public reward;
-    mapping (address => bool) public admin;
+    address[] public admins;
+    mapping (address => uint256) private adminIndex;
+    mapping (address => bool) private adminStatus;
     mapping(uint256 => Campaign) private requestList;
     mapping(uint256 => Campaign) private campaigns;
     uint256 private numberOfRequest = 0;
@@ -31,12 +33,19 @@ contract CrowdFunding is Ownable {
     uint256 public fundLocked;
     uint256 public feeCollected;
 
-    constructor(address payable _rewardContract) Ownable() {
+    constructor(address payable _rewardContract) Ownable(msg.sender) {
         reward = IReward(_rewardContract);
-        admin[msg.sender] = true;
+        admins.push(msg.sender);
+        adminIndex[msg.sender] = 0;
+        adminStatus[msg.sender] = true;
     }
 
-    receive() external payable { }
+    receive() external payable {}
+
+    modifier onlyAdmin {
+        require(adminStatus[msg.sender] == true, "You are not admin");
+        _;
+    }
 
     // Request Campaign
     function requestCampaign(address _owner, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) public returns (uint256) {
@@ -76,8 +85,7 @@ contract CrowdFunding is Ownable {
     }
 
     // Approve campaign from request list then create the campaign
-    function approveRequest(uint256 _id) public {
-        require(admin[msg.sender] == true, "You are not admin");
+    function approveRequest(uint256 _id) public onlyAdmin{
         require(_id <= numberOfRequest && _id >= 0, "Campaign not exist");
         Campaign memory campaign = requestList[_id];
 
@@ -106,9 +114,7 @@ contract CrowdFunding is Ownable {
     }
 
     // Release funds to the campaign owner
-    function releaseFunds(uint256 _id) public payable {
-        require(admin[msg.sender] == true, "Only admin can release funds");
-
+    function releaseFunds(uint256 _id) public onlyAdmin payable {
         address _campaignOwner = campaigns[_id].owner;
         uint256 _storedAmount = campaigns[_id].storedAmount;
 
@@ -128,11 +134,30 @@ contract CrowdFunding is Ownable {
     }
 
     function addAdmin(address _newAdmin) external onlyOwner {
-        admin[_newAdmin] = true;
+        require(isAdminExist(_newAdmin) == false, "The address is already admin");
+        adminIndex[_newAdmin] = getAdminLength();
+        admins.push(_newAdmin);
+        adminStatus[_newAdmin] = true;
     }
 
     function removeAdmin(address _admin) external onlyOwner {
-        delete admin[_admin];
+        require(isAdminExist(_admin), "Admin doesn't exist");
+
+        uint256 _indexToRemove = adminIndex[_admin]; // index of address that will be removed
+        address _adminToMove = admins[getAdminLength() - 1]; // get the last admin address
+
+        admins[_indexToRemove] = _adminToMove; // replace address that will be removed with the last admin address
+        adminIndex[_adminToMove] = _indexToRemove; // change index of last address with index from address that will be removed
+        admins.pop();
+        delete adminStatus[_admin];
+    }
+
+    function isAdminExist(address _admin) public view returns (bool) {
+        return adminStatus[_admin];
+    }
+
+    function getAdminLength() public view returns (uint256) {
+        return admins.length;
     }
 
     function getDonators(uint256 _id) view public returns (address[] memory, uint256[] memory) {
@@ -169,4 +194,5 @@ contract CrowdFunding is Ownable {
 
         return allRequests;
     }
+
 }
