@@ -51,6 +51,11 @@ contract CrowdFunding is Ownable {
         _;
     }
 
+    event CampaignRequested(address indexed _owner, address indexed _requester, string _title, string _description, uint256 _target, uint256 _deadline, string _image);
+    event CampaignAction(address indexed _owner, address indexed _requester, string _title, string _description, uint256 _target, uint256 _deadline, string _image, address _verifier);
+    event CampaignDonated(address indexed _donator,  uint256 _amount, uint256 _id);
+    event FundReleased(address _to, uint256 _sent, uint256 _fee, address _verifier);
+
     // Request Campaign
     function requestCampaign(address _owner, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) public returns (uint256) {
         address _requester = msg.sender;
@@ -72,12 +77,13 @@ contract CrowdFunding is Ownable {
         numberOfRequest++;
         hasRequest[_requester] = true;
 
+        emit CampaignRequested(request.owner, _requester, request.title, request.description, request.target, request.deadline, request.image);
         return numberOfRequest - 1;
     }
 
     function _createCampaign(address _owner, address _requester, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) internal returns (uint256) {
         require(_deadline > block.timestamp, "The deadline should be a date in the future.");
-        
+
         Campaign storage campaign = campaigns[numberOfCampaigns];
 
         campaign.owner = _owner;
@@ -95,7 +101,7 @@ contract CrowdFunding is Ownable {
     }
 
     // Approve campaign from request list then create the campaign
-    function approveRequest(uint256 _id) public onlyAdmin{
+    function approveRequest(uint256 _id) external onlyAdmin{
         require(_id <= numberOfRequest && _id >= 0, "Campaign not exist");
         Campaign memory request = requestList[_id];
 
@@ -103,25 +109,38 @@ contract CrowdFunding is Ownable {
 
         delete hasRequest[request.requester];
         delete requestList[_id];
+
+        emit CampaignAction(request.owner, request.requester, request.title, request.description, request.target, request.deadline, request.image, msg.sender);
+    }
+
+    function rejectRequest(uint256 _id) external onlyAdmin {
+        Campaign memory request = requestList[_id];
+        delete hasRequest[request.requester];
+        delete requestList[_id];
+
+        emit CampaignAction(request.owner, request.requester, request.title, request.description, request.target, request.deadline, request.image, msg.sender);
     }
 
     // Donate funds then record amount into Reward contract
-    function donateToCampaign(uint256 _id) public payable {
-        uint256 amount = msg.value;
+    function donateToCampaign(uint256 _id) external payable {
+        address _donator = msg.sender;
+        uint256 _amount = msg.value;
 
         Campaign storage campaign = campaigns[_id];
 
-        campaign.donators.push(msg.sender);
-        campaign.donations.push(amount);
+        campaign.donators.push(_donator);
+        campaign.donations.push(_amount);
 
-        (bool sent, ) = payable(address(this)).call{value: amount}("");
+        (bool sent, ) = payable(address(this)).call{value: _amount}("");
 
         require(sent, "Send Ether failed");
 
-        fundLocked += amount; // mencatat donasi yang terkumpul
-        campaign.amountCollected += amount;
-        campaign.storedAmount += amount;
-        reward.recordDonation(msg.sender, amount);
+        fundLocked += _amount; // mencatat donasi yang terkumpul
+        campaign.amountCollected += _amount;
+        campaign.storedAmount += _amount;
+        reward.recordDonation(_donator, _amount);
+
+        emit CampaignDonated(_donator, _amount, _id);
     }
 
     // Release funds to the campaign owner
@@ -146,13 +165,15 @@ contract CrowdFunding is Ownable {
         fundLocked -= _storedAmount;
         campaigns[_id].storedAmount = 0;
         campaigns[_id].isReleased = true;
+
+        emit FundReleased(_campaignOwner, _amountAfterFee, _fee, msg.sender);
     }
 
-    function getDonators(uint256 _id) view public returns (address[] memory, uint256[] memory) {
+    function getDonators(uint256 _id) external view returns (address[] memory, uint256[] memory) {
         return (campaigns[_id].donators, campaigns[_id].donations);
     }
 
-    function getCampaigns() public view returns (Campaign[] memory) {
+    function getCampaigns() external view returns (Campaign[] memory) {
         Campaign[] memory allCampaigns = new Campaign[](numberOfCampaigns);
 
         for(uint i = 0; i < numberOfCampaigns; i++) {
@@ -167,7 +188,7 @@ contract CrowdFunding is Ownable {
         return allCampaigns;
     }
 
-    function getRequestList() public view returns (Campaign[] memory) {
+    function getRequestList() external view returns (Campaign[] memory) {
         Campaign[] memory allRequests = new Campaign[](numberOfRequest);
 
         for (uint i = 0; i < numberOfRequest; i++) 

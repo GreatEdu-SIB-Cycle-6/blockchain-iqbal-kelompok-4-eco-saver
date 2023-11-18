@@ -30,6 +30,9 @@ contract Reward is Ownable{
         ecoSaverNFT = IEcoSaverNFT(_ecoSaverNFT);
     }
 
+    event ItemAdded(string _name, string _description, Rarity _rarity, uint256 _minAmount, uint256 _remainingItem, string _image, bool _isNft);
+    event RewardClaimed(address _recipient, uint256 _rewardId);
+
     // Menambahkan item untuk reward
     function addItem(string calldata _name, string calldata _description, Rarity _rarity, uint256 _minAmount, uint256 _remainingItem, string calldata _image, bool _isNft) public onlyOwner returns(uint256) {
         Item storage item = rewardList[numberOfReward];
@@ -43,6 +46,8 @@ contract Reward is Ownable{
         item.isNft = _isNft;
 
         numberOfReward++;
+
+        emit ItemAdded(_name, _description, _rarity, _minAmount, _remainingItem, _image, _isNft);
         return numberOfReward - 1;
     }
 
@@ -52,21 +57,22 @@ contract Reward is Ownable{
         donatorData[donator] += amount;
     }
 
-    function claimReward(uint256 _id) public {
-        uint256 minAmount = rewardList[_id].minAmount;
-        address donator = msg.sender;
+    function claimReward(uint256 _id) external {
+        uint256 _minAmount = rewardList[_id].minAmount;
+        address _donator = msg.sender;
 
-        require(donatorData[donator] >= minAmount , "The amount of your donation is insufficient.");
+        require(donatorData[_donator] >= _minAmount , "The amount of your donation is insufficient.");
         bool isNft = rewardList[_id].isNft;
         
         if (isNft) {
             string memory _imageURI = rewardList[_id].image;
             ecoSaverNFT.mint(msg.sender, _imageURI);
         } else {
-            donatorData[donator] -= minAmount;
+            donatorData[_donator] -= _minAmount;
             rewardList[_id].remainingItem -= 1;
         }
-
+        
+        emit RewardClaimed(_donator, _id);
     }
 
     
