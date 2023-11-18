@@ -10,6 +10,8 @@ contract EcoSaverNFT is ERC721URIStorage, Ownable {
     mapping (string => string) internal metadataList;
  
     constructor() ERC721("EcoSaverNFT", "ECO") Ownable(msg.sender) {}
+
+    event MetadataAdded(string _imgURI, string _tokenURI);
  
     function mint(address _to, string calldata _tokenURI) external {
         require(msg.sender == rewardContract, "Forbidden access");
@@ -26,5 +28,7 @@ contract EcoSaverNFT is ERC721URIStorage, Ownable {
  
     function addMetadata(string calldata _imgURI, string calldata _tokenURI) external onlyOwner {
         metadataList[_imgURI] = _tokenURI;
+
+        emit MetadataAdded(_imgURI, _tokenURI);
     }
 }
