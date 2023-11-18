@@ -15,6 +15,7 @@ interface IAdmin {
 contract CrowdFunding is Ownable {
     struct Campaign {
         address owner;
+        address requester; // to record address who execute request
         string title;
         string description;
         uint256 target;
@@ -32,6 +33,7 @@ contract CrowdFunding is Ownable {
     address adminContract;
     mapping(uint256 => Campaign) private requestList;
     mapping(uint256 => Campaign) private campaigns;
+    mapping (address => bool) private hasRequest;
     uint256 private numberOfRequest = 0;
     uint256 private numberOfCampaigns = 0;
     uint256 public fundLocked;
@@ -51,11 +53,15 @@ contract CrowdFunding is Ownable {
 
     // Request Campaign
     function requestCampaign(address _owner, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) public returns (uint256) {
-        Campaign storage request = requestList[numberOfRequest];
+        address _requester = msg.sender;
 
+        require(hasRequest[_requester] == false, "You have already made a campaign request. Please wait until your request is processed first.");
         require(_deadline > block.timestamp, "The deadline should be a date in the future.");
 
+        Campaign storage request = requestList[numberOfRequest];
+
         request.owner = _owner;
+        request.requester = _requester;
         request.title = _title;
         request.description = _description;
         request.target = _target;
@@ -64,16 +70,18 @@ contract CrowdFunding is Ownable {
         request.image = _image;
 
         numberOfRequest++;
+        hasRequest[_requester] = true;
 
         return numberOfRequest - 1;
     }
 
-    function _createCampaign(address _owner, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) internal returns (uint256) {
+    function _createCampaign(address _owner, address _requester, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) internal returns (uint256) {
+        require(_deadline > block.timestamp, "The deadline should be a date in the future.");
+        
         Campaign storage campaign = campaigns[numberOfCampaigns];
 
-        require(_deadline > block.timestamp, "The deadline should be a date in the future.");
-
         campaign.owner = _owner;
+        campaign.requester = _requester;
         campaign.title = _title;
         campaign.description = _description;
         campaign.target = _target;
@@ -89,10 +97,11 @@ contract CrowdFunding is Ownable {
     // Approve campaign from request list then create the campaign
     function approveRequest(uint256 _id) public onlyAdmin{
         require(_id <= numberOfRequest && _id >= 0, "Campaign not exist");
-        Campaign memory campaign = requestList[_id];
+        Campaign memory request = requestList[_id];
 
-        _createCampaign(campaign.owner, campaign.title, campaign.description, campaign.target, campaign.deadline, campaign.image);
+        _createCampaign(request.owner, request.requester, request.title, request.description, request.target, request.deadline, request.image);
 
+        delete hasRequest[request.requester];
         delete requestList[_id];
     }
 
