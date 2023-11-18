@@ -75,7 +75,7 @@ contract Reward is Ownable{
         emit RewardClaimed(_donator, _id);
     }
 
-    setCrowdFundingAddr(address _crowdfunding) external onlyOwner {
+    function setCrowdFundingAddr(address _crowdfunding) external onlyOwner {
         crowdFundingAddr = _crowdfunding;
     }
 
