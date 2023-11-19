@@ -38,7 +38,7 @@ contract CrowdFunding is Ownable {
     uint256 private numberOfCampaigns = 0;
     uint256 public fundLocked;
 
-    constructor(address payable _rewardContract, address payable _adminContract) Ownable(msg.sender) {
+    constructor(address payable _rewardContract, address payable _adminContract) Ownable() {
         reward = IReward(_rewardContract);
         adminContract = _adminContract;
         admin = IAdmin(_adminContract);

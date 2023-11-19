@@ -5,11 +5,11 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
  
 contract EcoSaverNFT is ERC721URIStorage, Ownable {
-    address rewardContract;
-    uint256 tokenId;
+    address public rewardContract;
+    uint256 public tokenId;
     mapping (string => string) internal metadataList;
  
-    constructor() ERC721("EcoSaverNFT", "ECO") Ownable(msg.sender) {}
+    constructor() ERC721("EcoSaverNFT", "ECO") Ownable() {}
 
     event MetadataAdded(string _imgURI, string _tokenURI);
  

@@ -26,7 +26,7 @@ contract Reward is Ownable{
     mapping (address => uint256) public donatorData;
     // mapping (address => Item[]) public claimHistory;
 
-    constructor(address _ecoSaverNFT) Ownable(msg.sender) {
+    constructor(address _ecoSaverNFT) Ownable() {
         ecoSaverNFT = IEcoSaverNFT(_ecoSaverNFT);
     }
 
