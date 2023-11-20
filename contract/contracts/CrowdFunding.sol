@@ -81,7 +81,7 @@ contract CrowdFunding is Ownable {
         return numberOfRequest - 1;
     }
 
-    function _createCampaign(address _owner, address _requester, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) internal returns (uint256) {
+    function _createCampaign(address _owner, address _requester, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) private returns (uint256) {
         require(_deadline > block.timestamp, "The deadline should be a date in the future.");
 
         Campaign storage campaign = campaigns[numberOfCampaigns];
@@ -113,6 +113,7 @@ contract CrowdFunding is Ownable {
         emit CampaignAction(request.owner, request.requester, request.title, request.description, request.target, request.deadline, request.image, msg.sender);
     }
 
+    // Reject selected request and delete from requestList
     function rejectRequest(uint256 _id) external onlyAdmin {
         Campaign memory request = requestList[_id];
         delete hasRequest[request.requester];

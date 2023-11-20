@@ -35,11 +35,11 @@ describe("EcoSaver Crowdfunding Testing", function () {
         return { ecoSaverNFT, ecoSaverNFTContract, reward, admin, crowdFunding, owner, admin1, admin2, user };
     }
 
-    describe("EcoSaverNFT", function () {
+    describe("EcoSaverNFT Contract", function () {
         
-        it("Only owner can set rewardContract variable", async function () {
+        it("Owner can set rewardContract variable", async function () {
 
-            // Here we'll use ecoSaverNFT contract address as dummy address to replace existing rewardContract address
+            // Here we'll use ecoSaverNFTContract address as dummy address to replace existing rewardContract address
             const { ecoSaverNFT, ecoSaverNFTContract, owner, admin1, user } = await loadFixture(deployCrowdfundingFixture);
             
             // Set rewardContract by owner
@@ -52,5 +52,40 @@ describe("EcoSaver Crowdfunding Testing", function () {
             await expect(ecoSaverNFT.connect(user).setRewardContractAddr(ecoSaverNFTContract)).to.be.revertedWith("Ownable: caller is not the owner");
         })
 
+        it("Owner can add metadata for NFT Minting", async function () {
+            
+            const { ecoSaverNFT, owner, admin1, user } = await loadFixture(deployCrowdfundingFixture);
+
+            // Add metadata from owner must be success
+            await ecoSaverNFT.connect(owner).addMetadata("ipfs://owner", "ipfs://ownermetadata");
+            const metadata = await ecoSaverNFT.connect(owner).getMetadata("ipfs://owner");
+            expect(metadata).to.be.equals("ipfs://ownermetadata");
+
+            // Add metadata from other than owner must be reverted
+            await expect(ecoSaverNFT.connect(admin1).addMetadata("http://admin1.com", "http://admin1.com")).to.be.revertedWith("Ownable: caller is not the owner");
+            await expect(ecoSaverNFT.connect(user).addMetadata("http://google.com", "http://metadata.com")).to.be.revertedWith("Ownable: caller is not the owner");
+        })
+
     })
+
+    describe("Reward Contract", async function () {
+
+        it("Owner can add reward item", async function () {
+
+            const { reward, owner, admin1, user } = await loadFixture(deployCrowdfundingFixture);
+
+            // Add item from owner must be success
+            await reward.connect(owner).addItem("T-shirt", "T-shirt with superhero picture", 1, 100, 99, "ipfs://image", false); 
+            const item = await reward.connect(owner).getReward(0);
+            await expect(item).to.be.an("array").that.does.not.include("");
+            await expect(item).to.be.an("array").that.does.not.include(0);
+
+            // Add item from other than owner must be reverted
+            await expect(reward.connect(admin1).addItem("T-shirt", "T-shirt with superhero picture", 1, 100, 99, "ipfs://image", false)).to.be.revertedWith("Ownable: caller is not the owner");
+            await expect(reward.connect(user).addItem("T-shirt", "T-shirt with superhero picture", 1, 100, 99, "ipfs://image", false)).to.be.revertedWith("Ownable: caller is not the owner");
+
+        })
+
+    })
+
 })

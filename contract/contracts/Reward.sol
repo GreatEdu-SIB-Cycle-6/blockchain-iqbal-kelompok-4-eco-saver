@@ -67,6 +67,8 @@ contract Reward is Ownable{
         if (isNft) {
             string memory _imageURI = rewardList[_id].image;
             ecoSaverNFT.mint(msg.sender, _imageURI);
+            donatorData[_donator] -= _minAmount;
+            rewardList[_id].remainingItem -= 1;
         } else {
             donatorData[_donator] -= _minAmount;
             rewardList[_id].remainingItem -= 1;
@@ -79,5 +81,8 @@ contract Reward is Ownable{
         crowdFundingAddr = _crowdfunding;
     }
 
+    function getReward(uint256 _id) external view returns (Item memory) {
+        return rewardList[_id];
+    }
     
 }
