@@ -38,11 +38,7 @@ contract CrowdFunding is Ownable {
     uint256 private numberOfCampaigns = 0;
     uint256 public fundLocked;
 
-    constructor(address payable _rewardContract, address payable _adminContract) Ownable() {
-        reward = IReward(_rewardContract);
-        adminContract = _adminContract;
-        admin = IAdmin(_adminContract);
-    }
+    constructor() Ownable() {}
 
     receive() external payable {}
 
@@ -168,6 +164,17 @@ contract CrowdFunding is Ownable {
         campaigns[_id].isReleased = true;
 
         emit FundReleased(_campaignOwner, _amountAfterFee, _fee, msg.sender);
+    }
+
+    // Admin instance must be set first with Admin Contract address
+    function setAdmin(address _admin) external onlyOwner {
+        adminContract = _admin;
+        admin = IAdmin(_admin);
+    }
+    
+    // Reward must be set first with Reward Contract address
+    function setReward(address _reward) external onlyOwner {
+        reward = IReward(_reward);
     }
 
     function getDonators(uint256 _id) external view returns (address[] memory, uint256[] memory) {

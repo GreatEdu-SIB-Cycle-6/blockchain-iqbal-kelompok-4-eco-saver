@@ -80,7 +80,7 @@ contract Admin is Ownable {
         return admins.length;
     }
 
-    function getAdmins() public view returns (address[] memory) {
+    function getAdmins() external view returns (address[] memory) {
         return admins;
     }
 

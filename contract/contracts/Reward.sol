@@ -19,16 +19,14 @@ contract Reward is Ownable{
         bool isNft;
     }
 
-    IEcoSaverNFT private ecoSaverNFT;
+    IEcoSaverNFT public ecoSaverNFT;
     address public crowdFundingAddr;
     mapping (uint256 => Item) private rewardList;
     uint256 public numberOfReward;
     mapping (address => uint256) public donatorData;
     // mapping (address => Item[]) public claimHistory;
 
-    constructor(address _ecoSaverNFT) Ownable() {
-        ecoSaverNFT = IEcoSaverNFT(_ecoSaverNFT);
-    }
+    constructor() Ownable() {}
 
     event ItemAdded(string _name, string _description, Rarity _rarity, uint256 _minAmount, uint256 _remainingItem, string _image, bool _isNft);
     event RewardClaimed(address _recipient, uint256 _rewardId);
@@ -77,6 +75,12 @@ contract Reward is Ownable{
         emit RewardClaimed(_donator, _id);
     }
 
+    // ecoSaverNFT must be set first with EcoSaverNFT contract address
+    function setEcoSaverNFT(address _ecoSaverNFT) external onlyOwner {
+        ecoSaverNFT = IEcoSaverNFT(_ecoSaverNFT);
+    }
+
+    // crowdFundingAddr must be set first with CrowdFunding contract address
     function setCrowdFundingAddr(address _crowdfunding) external onlyOwner {
         crowdFundingAddr = _crowdfunding;
     }
