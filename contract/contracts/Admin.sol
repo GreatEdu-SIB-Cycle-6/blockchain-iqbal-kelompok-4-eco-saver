@@ -11,7 +11,7 @@ contract Admin is Ownable {
     mapping (address => uint) public distributeFeeFailed;
     uint256 public feeCollected;
 
-    constructor() Ownable() {
+    constructor() Ownable(msg.sender) {
         admins.push(msg.sender);
         adminIndex[msg.sender] = 0;
         adminStatus[msg.sender] = true;

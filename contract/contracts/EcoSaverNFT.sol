@@ -9,7 +9,7 @@ contract EcoSaverNFT is ERC721URIStorage, Ownable {
     uint256 public tokenId;
     mapping (string => string) private metadataList;
  
-    constructor() ERC721("EcoSaverNFT", "ECO") Ownable() {}
+    constructor() ERC721("EcoSaverNFT", "ECO") Ownable(msg.sender) {}
 
     event MetadataAdded(string _imgURI, string _tokenURI);
  

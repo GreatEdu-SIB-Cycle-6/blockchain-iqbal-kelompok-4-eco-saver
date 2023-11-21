@@ -38,7 +38,7 @@ contract CrowdFunding is Ownable {
     uint256 private numberOfCampaigns = 0;
     uint256 public fundLocked;
 
-    constructor() Ownable() {}
+    constructor() Ownable(msg.sender) {}
 
     receive() external payable {}
 

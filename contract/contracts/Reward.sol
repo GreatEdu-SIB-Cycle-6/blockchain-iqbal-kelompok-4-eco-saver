@@ -26,7 +26,7 @@ contract Reward is Ownable{
     mapping (address => uint256) public donatorData;
     // mapping (address => Item[]) public claimHistory;
 
-    constructor() Ownable() {}
+    constructor() Ownable(msg.sender) {}
 
     event ItemAdded(string _name, string _description, Rarity _rarity, uint256 _minAmount, uint256 _remainingItem, string _image, bool _isNft);
     event RewardClaimed(address _recipient, uint256 _rewardId);

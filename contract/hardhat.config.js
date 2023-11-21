@@ -1,6 +1,7 @@
 require("@matterlabs/hardhat-zksync-solc");
 require ("@nomicfoundation/hardhat-toolbox");
 
+require("@matterlabs/hardhat-zksync-solc");
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   zksolc: {
@@ -12,20 +13,6 @@ module.exports = {
       },
     },
   },
-  networks: {
-    zksync_testnet: {
-      url: "https://zksync2-testnet.zksync.dev",
-      ethNetwork: "goerli",
-      chainId: 280,
-      zksync: true,
-    },
-    zksync_mainnet: {
-      url: "https://zksync2-mainnet.zksync.io/",
-      ethNetwork: "mainnet",
-      chainId: 324,
-      zksync: true,
-    },
-  },
   paths: {
     artifacts: "./artifacts-zk",
     cache: "./cache-zk",
@@ -34,6 +21,15 @@ module.exports = {
   },
   solidity: {
     version: "0.8.20",
+    defaultNetwork : 'bsc',
+    networks : {
+      hardhat : {},
+      bscTestnet: {
+        url: "https://bsc-testnet.publicnode.com",
+        accounts : [`0x${process.env.PRIVATE_KEY}`],
+        chainId : 97,
+      }
+    },
     settings: {
       optimizer: {
         enabled: true,
