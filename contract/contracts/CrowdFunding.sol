@@ -181,6 +181,7 @@ contract CrowdFunding is Ownable {
         return (campaigns[_id].donators, campaigns[_id].donations);
     }
 
+    // Get all campaigns
     function getCampaigns() external view returns (Campaign[] memory) {
         Campaign[] memory allCampaigns = new Campaign[](numberOfCampaigns);
 
@@ -194,6 +195,11 @@ contract CrowdFunding is Ownable {
         }
 
         return allCampaigns;
+    }
+
+    // Get campaign by id
+    function getCampaign(uint256 _id) external view returns(Campaign memory) {
+        return campaigns[_id];
     }
 
     function getRequestList() external view returns (Campaign[] memory) {
@@ -210,6 +216,11 @@ contract CrowdFunding is Ownable {
         }
 
         return allRequests;
+    }
+
+    // get request data by Id
+    function getRequest(uint256 _id) external view returns (Campaign memory) {
+        return requestList[_id];
     }
 
 }
