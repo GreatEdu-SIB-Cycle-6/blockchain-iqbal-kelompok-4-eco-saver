@@ -6,3 +6,8 @@
 body {
   background-color: #000b22;
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.8);
+}

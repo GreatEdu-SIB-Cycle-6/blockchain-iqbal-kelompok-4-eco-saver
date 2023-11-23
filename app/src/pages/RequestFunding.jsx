@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
 
+import { useStateContext } from "../context";
 import { checkIfImage } from "../utils";
 import { FormField, CustomButton } from "../components";
 
 const RequestFunding = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { requestCampaign } = useStateContext();
   const [form, setForm] = useState({
     name: "",
     title: "",
@@ -20,9 +22,25 @@ const RequestFunding = () => {
   const handleFormFieldChange = (fieldName, event) => {
     setForm({ ...form, [fieldName]: event.target.value });
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(form);
+
+    checkIfImage(form.image, async (exist) => {
+      if (exist) {  
+        setIsLoading(true);
+        await requestCampaign({
+          ...form,
+          target: ethers.utils.parseUnits(form.target, 18),
+        });
+        setIsLoading(false);
+        navigate("/campaign");
+      } else {
+        alert("Masukkan link gambar yang valid!");
+        setForm({ ...form, image: "" });
+      }
+    });
+
+    // console.log(form);
   };
 
   return (
