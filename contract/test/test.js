@@ -217,6 +217,32 @@ describe("EcoSaver Crowdfunding Testing", function () {
 
         })
 
+        it("Stored donation funds can be released by the admin", async function(){
+            const { crowdFunding, admin, owner, user, user2, admin1, admin2 } = await loadFixture(deployCrowdfundingFixture);
+
+            // user create a request campaign
+            await crowdFunding.connect(user).requestCampaign(user, "Menanam Pohon", "Menanam Pohon di Purwokerto", 500000000000000, 1732258336, "ipfs://image");
+            // admin approve the request
+            await crowdFunding.connect(owner).approveRequest(0);
+            // user2 donates to the campaign for 1 ether
+            await crowdFunding.connect(user2).donateToCampaign(0, {value: ethers.parseEther("1")});
+
+            // admin releases the donation funds to the campaign owner's address
+            const balanceBefore = await ethers.provider.getBalance(user.address); // campaign owner balance
+            await crowdFunding.connect(owner).releaseFunds(0);
+            const balanceAfter = await ethers.provider.getBalance(user.address);
+            // expect the campaign owner's balance to increase
+            expect(balanceAfter).to.be.above(balanceBefore);
+            /**
+             * expect platform fees to be distributed to the Admin Contract
+             * platform fee = 5%
+             * fee = 5% * 1 ether = 0.05 ether = 50000000000000000 wei
+             */
+            const fee = ethers.parseUnits("50000000000000000", "wei");
+            const feeCollected = await admin.connect(owner).feeCollected();
+            expect(feeCollected).to.be.equal(fee);
+        })
+
     })
 
 })
