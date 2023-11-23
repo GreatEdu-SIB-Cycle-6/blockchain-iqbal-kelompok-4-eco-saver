@@ -23,7 +23,7 @@ contract Reward is Ownable{
     address public crowdFundingAddr;
     mapping (uint256 => Item) private rewardList;
     uint256 public numberOfReward;
-    mapping (address => uint256) public donatorData;
+    mapping (address => uint256) private donatorData;
     // mapping (address => Item[]) public claimHistory;
 
     constructor() Ownable(msg.sender) {}
@@ -87,6 +87,11 @@ contract Reward is Ownable{
 
     function getReward(uint256 _id) external view returns (Item memory) {
         return rewardList[_id];
+    }
+
+    // get donator data by address
+    function getDonatorData(address _donator) external view returns (uint256){
+        return donatorData[_donator];
     }
     
 }
