@@ -38,6 +38,79 @@ describe("EcoSaver Crowdfunding Testing", function () {
         return { ecoSaverNFT, ecoSaverNFTContract, reward, rewardContract, admin, adminContract, crowdFunding, crowdFundingContract, owner, admin1, admin2, user, user2 };
     }
 
+    describe("CrowdFunding Contract", function(){
+
+        it("Campaign owner can create a request and get approved or rejected by admin", async function () {
+            const { crowdFunding, owner, user, user2 } = await loadFixture(deployCrowdfundingFixture);
+
+            // user as campaign owner can create a request campaign
+            await crowdFunding.connect(user).requestCampaign(user, "Menanam Pohon", "Menanam Pohon di Purwokerto", 50, 1732258336, "ipfs://image");
+            const request1 = await crowdFunding.connect(owner).getRequest(0);
+            expect(request1[0]).to.be.equal(user.address);
+            await crowdFunding.connect(user2).requestCampaign(user2, "Menanam Pohon", "Menanam Pohon di Purwokerto", 50, 1732258336, "ipfs://image");
+            let coba2 = await crowdFunding.connect(owner).getRequest(1);
+            expect(coba2[0]).to.be.equal(user2.address);
+
+            // owner can reject the request from user
+            await crowdFunding.connect(owner).rejectRequest(1);
+            coba2 = await crowdFunding.connect(owner).getRequest(1);
+            expect(coba2[0]).to.be.equal("0x0000000000000000000000000000000000000000");
+
+            //owner can approve the request from user
+            await crowdFunding.connect(owner).approveRequest(0);
+            const campaign = await crowdFunding.connect(owner).getCampaign(0);
+            expect(campaign[0]).to.be.equal(user.address);
+
+        })
+
+        it("Available campaigns can accept donations and record these donations", async function(){
+            const { crowdFunding, reward, owner, user, user2 } = await loadFixture(deployCrowdfundingFixture);
+
+            // user create a request campaign
+            await crowdFunding.connect(user).requestCampaign(user, "Menanam Pohon", "Menanam Pohon di Purwokerto", 500000000000000, 1732258336, "ipfs://image");
+            // admin approve the request
+            await crowdFunding.connect(owner).approveRequest(0);
+
+            // user2 donates to the campaign
+            await crowdFunding.connect(user2).donateToCampaign(0, {value: ethers.parseUnits("17", "wei")});
+            // expect donations to be recorded in campaign property
+            const campaign = await crowdFunding.connect(owner).getCampaign(0);
+            expect(campaign[9][0]).to.be.equal(user2.address);
+            expect(campaign[10][0]).to.be.equal(17);
+            // expect donations to be recorded in the reward contract
+            const donatorData = await reward.connect(owner).getDonatorData(user2);
+            expect(donatorData).to.be.equal(17);
+
+        })
+
+        it("Stored donation funds can be released by the admin", async function(){
+            const { crowdFunding, admin, owner, user, user2 } = await loadFixture(deployCrowdfundingFixture);
+
+            // user create a request campaign
+            await crowdFunding.connect(user).requestCampaign(user, "Menanam Pohon", "Menanam Pohon di Purwokerto", 500000000000000, 1732258336, "ipfs://image");
+            // admin approve the request
+            await crowdFunding.connect(owner).approveRequest(0);
+            // user2 donates to the campaign for 1 ether
+            await crowdFunding.connect(user2).donateToCampaign(0, {value: ethers.parseEther("1")});
+
+            // admin releases the donation funds to the campaign owner's address
+            const balanceBefore = await ethers.provider.getBalance(user.address); // campaign owner balance
+            await crowdFunding.connect(owner).releaseFunds(0);
+            const balanceAfter = await ethers.provider.getBalance(user.address);
+            // expect the campaign owner's balance to increase
+            expect(balanceAfter).to.be.above(balanceBefore);
+            /**
+             * expect platform fees to be distributed to the Admin Contract
+             * platform fee = 5%
+             * fee = 5% * 1 ether = 0.05 ether = 50000000000000000 wei
+             */
+            const fee = ethers.parseUnits("50000000000000000", "wei");
+            const feeCollected = await admin.connect(owner).feeCollected();
+            expect(feeCollected).to.be.equal(fee);
+        })
+
+    })
+
     describe("EcoSaverNFT Contract", function () {
         
         it("Owner can set rewardContract variable", async function () {
@@ -122,6 +195,34 @@ describe("EcoSaver Crowdfunding Testing", function () {
             expect(reward.connect(user).setEcoSaverNFT(rewardContract)).to.be.revertedWithCustomError;
         })
 
+        it("Donators can claim rewards according to the amount of their donation", async function(){
+            const { crowdFunding, reward, ecoSaverNFT, owner, user, user2 } = await loadFixture(deployCrowdfundingFixture);
+
+            // user as campaign owner create a request campaign
+            await crowdFunding.connect(user).requestCampaign(user, "Menanam Pohon", "Menanam Pohon di Purwokerto", ethers.parseEther("1"), 1732258336, "ipfs://image");
+            //owner approve the request from user
+            await crowdFunding.connect(owner).approveRequest(0);
+            // user2 donates to the campaign
+            await crowdFunding.connect(user2).donateToCampaign(0, {value: ethers.parseEther("1")});
+
+            // Add reward item for reward claim
+            await reward.connect(owner).addItem("T-shirt", "T-shirt with superhero picture", 2, ethers.parseEther("1"), 99, "https://image.com", false);
+            await ecoSaverNFT.connect(owner).addMetadata("ipfs://firstimage", "ipfs://firstmetadata");
+            await reward.connect(owner).addItem("Ocean", "NFT ocean picture", 2, ethers.parseEther("1"), 1, "ipfs://firstimage", true);
+
+            // user2 as donator claim NFT reward
+            await reward.connect(user2).claimReward(1);
+            const user2NFT = await ecoSaverNFT.balanceOf(user2.address);
+            await expect(user2NFT).to.be.equal(1);
+
+            /**
+             * user2 needs to make another donation 
+             * to meet the minimum amount required for the T-shirt reward
+             */
+            await expect(reward.connect(user2).claimReward(0)).to.be.revertedWith("The amount of your donation is insufficient.");
+
+        })
+
     })
 
     describe("Admin Contract", function () {
@@ -170,77 +271,41 @@ describe("EcoSaver Crowdfunding Testing", function () {
 
         })
 
-    })
+        it("Collected fee can be distribute to all admins", async function(){
+            const { crowdFunding, admin, owner, admin1, admin2, user, user2 } = await loadFixture(deployCrowdfundingFixture);
 
-    describe("CrowdFunding Contract", function(){
-
-        it("Campaign owner can create a request and get approved or rejected by admin", async function () {
-            const { crowdFunding, owner, user, user2 } = await loadFixture(deployCrowdfundingFixture);
-
-            // user as campaign owner can create a request campaign
-            await crowdFunding.connect(user).requestCampaign(user, "Menanam Pohon", "Menanam Pohon di Purwokerto", 50, 1732258336, "ipfs://image");
-            const request1 = await crowdFunding.connect(owner).getRequest(0);
-            expect(request1[0]).to.be.equal(user.address);
-            await crowdFunding.connect(user2).requestCampaign(user2, "Menanam Pohon", "Menanam Pohon di Purwokerto", 50, 1732258336, "ipfs://image");
-            let coba2 = await crowdFunding.connect(owner).getRequest(1);
-            expect(coba2[0]).to.be.equal(user2.address);
-
-            // owner can reject the request from user
-            await crowdFunding.connect(owner).rejectRequest(1);
-            coba2 = await crowdFunding.connect(owner).getRequest(1);
-            expect(coba2[0]).to.be.equal("0x0000000000000000000000000000000000000000");
-
-            //owner can approve the request from user
-            await crowdFunding.connect(owner).approveRequest(0);
-            const campaign = await crowdFunding.connect(owner).getCampaign(0);
-            expect(campaign[0]).to.be.equal(user.address);
-
-        })
-
-        it("Available campaigns can accept donations and record these donations", async function(){
-            const { crowdFunding, reward, owner, user, user2 } = await loadFixture(deployCrowdfundingFixture);
+            // add some admin
+            await admin.connect(owner).addAdmin(admin1);
+            await admin.connect(owner).addAdmin(admin2);
 
             // user create a request campaign
-            await crowdFunding.connect(user).requestCampaign(user, "Menanam Pohon", "Menanam Pohon di Purwokerto", 500000000000000, 1732258336, "ipfs://image");
+            await crowdFunding.connect(user).requestCampaign(user, "Menanam Pohon", "Menanam Pohon di Purwokerto", ethers.parseEther("60"), 1732258336, "ipfs://image");
             // admin approve the request
             await crowdFunding.connect(owner).approveRequest(0);
-
-            // user2 donates to the campaign
-            await crowdFunding.connect(user2).donateToCampaign(0, {value: ethers.parseUnits("17", "wei")});
-            // expect donations to be recorded in campaign property
-            const campaign = await crowdFunding.connect(owner).getCampaign(0);
-            expect(campaign[9][0]).to.be.equal(user2.address);
-            expect(campaign[10][0]).to.be.equal(17);
-            // expect donations to be recorded in the reward contract
-            const donatorData = await reward.connect(owner).getDonatorData(user2);
-            expect(donatorData).to.be.equal(17);
-
-        })
-
-        it("Stored donation funds can be released by the admin", async function(){
-            const { crowdFunding, admin, owner, user, user2, admin1, admin2 } = await loadFixture(deployCrowdfundingFixture);
-
-            // user create a request campaign
-            await crowdFunding.connect(user).requestCampaign(user, "Menanam Pohon", "Menanam Pohon di Purwokerto", 500000000000000, 1732258336, "ipfs://image");
-            // admin approve the request
-            await crowdFunding.connect(owner).approveRequest(0);
-            // user2 donates to the campaign for 1 ether
-            await crowdFunding.connect(user2).donateToCampaign(0, {value: ethers.parseEther("1")});
-
+            // user2 donates to the campaign for 60 ether
+            await crowdFunding.connect(user2).donateToCampaign(0, {value: ethers.parseEther("60")});
             // admin releases the donation funds to the campaign owner's address
-            const balanceBefore = await ethers.provider.getBalance(user.address); // campaign owner balance
             await crowdFunding.connect(owner).releaseFunds(0);
-            const balanceAfter = await ethers.provider.getBalance(user.address);
-            // expect the campaign owner's balance to increase
-            expect(balanceAfter).to.be.above(balanceBefore);
+
+            // distribute collected fee to all admins
+            const ownerBefore = await ethers.provider.getBalance(owner.address);
+            const admin1Before = await ethers.provider.getBalance(admin1.address);
+            const admin2Before = await ethers.provider.getBalance(admin2.address);
+            await admin.connect(owner).distributeFee();
+
             /**
-             * expect platform fees to be distributed to the Admin Contract
+             * expect the balance of all admins to increase
              * platform fee = 5%
-             * fee = 5% * 1 ether = 0.05 ether = 50000000000000000 wei
+             * fee for last donation = 5% of 60 ether = 3 ether
+             * number of admin = 3
+             * distribution = 3 ether / 3 admin = 1 ether per admin
              */
-            const fee = ethers.parseUnits("50000000000000000", "wei");
-            const feeCollected = await admin.connect(owner).feeCollected();
-            expect(feeCollected).to.be.equal(fee);
+            const ownerAfter = await ethers.provider.getBalance(owner.address);
+            const admin1After = await ethers.provider.getBalance(admin1.address);
+            const admin2After = await ethers.provider.getBalance(admin2.address);
+            expect(ownerAfter).to.be.above(ownerBefore);
+            expect(admin1After).to.be.equal(admin1Before + ethers.parseEther("1"));
+            expect(admin2After).to.be.equal(admin2Before + ethers.parseEther("1"));
         })
 
     })
