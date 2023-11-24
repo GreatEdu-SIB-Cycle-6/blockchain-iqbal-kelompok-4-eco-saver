@@ -28,10 +28,11 @@ const RequestFunding = () => {
     checkIfImage(form.image, async (exist) => {
       if (exist) {  
         setIsLoading(true);
-        await requestCampaign({
+        const responseData = await requestCampaign({
           ...form,
           target: ethers.utils.parseUnits(form.target, 18),
         });
+        const {name} = responseData;
         setIsLoading(false);
         navigate("/campaign");
       } else {

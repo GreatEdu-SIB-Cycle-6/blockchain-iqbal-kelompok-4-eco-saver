@@ -215,10 +215,13 @@ contract CrowdFunding is Ownable {
 
         (bool sent, ) = payable(address(this)).call{value: _amount}("");
 
-        require(sent, "Send Ether failed");
+        // require(sent, "Send Ether failed");
 
-        fundLocked += _amount; // mencatat donasi yang terkumpul
-        campaign.amountCollected += _amount;
+        // fundLocked += _amount; // mencatat donasi yang terkumpul
+        // campaign.amountCollected += _amount;
+        if (sent){
+            campaign.amountCollected = campaign.amountCollected + _amount;
+        }
         campaign.storedAmount += _amount;
         reward.recordDonation(_donator, _amount);
 

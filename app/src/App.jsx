@@ -9,7 +9,8 @@ import {
   ApproveFunding,
   Rewards,
   About,
-  CampaignDetails
+  CampaignDetails,
+  DashboardAdmin
 } from "./pages";
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/rewards" element={<Rewards />} />
         <Route path="/about" element={<About />} />
         <Route path="/campaign-details/:id" element={<CampaignDetails/>} />
+        <Route path="dashboard-admin" element={<DashboardAdmin/>}/>
       </Routes>
       <Footer />
     </div>

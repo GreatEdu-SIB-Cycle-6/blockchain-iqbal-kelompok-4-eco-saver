@@ -12,8 +12,14 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
-    "0xDd868480112DcADb32364d933755eecb71D9262C"
+    "0xd98ccb2097efA33aE4341b1Bf432f3dA61f39e19"
   );
+
+  const { contractAdmin } = useContract(
+    "0x8Da107637428A1D4E5FACD84cB93225EFEc78108"
+  );
+
+  console.log(contractAdmin);
 
   // Write Request Campaign
   const { mutateAsync: requestCampaign } = useContractWrite(
@@ -28,6 +34,7 @@ export const StateContextProvider = ({ children }) => {
       const data = await requestCampaign({
         args: [
           address,
+          form.name,
           form.title,
           form.description,
           form.target.toString(),
@@ -36,6 +43,7 @@ export const StateContextProvider = ({ children }) => {
         ],
       });
       console.log("Sukses", data);
+      return data;
     } catch (error) {
       console.log("Error", error);
     }
@@ -46,6 +54,8 @@ export const StateContextProvider = ({ children }) => {
     const parsedCampaigns = campaigns.map((campaign, index) => ({
       owner: campaign.owner,
       title: campaign.title,
+      name: campaign.name,
+      requester: campaign.requester,
       description: campaign.description,
       target: ethers.utils.formatEther(campaign.target.toString()),
       deadline: campaign.deadline.toNumber(),
@@ -59,13 +69,14 @@ export const StateContextProvider = ({ children }) => {
     return parsedCampaigns;
   };
 
-  const donate = async(pId, amount) => {
-    const etherValue = ethers.utils.parseEther(amount)
-    const data = await contract.call('donateToCampaign', [pId], {value: etherValue});
+  const donate = async (pId, amount) => {
+    const etherValue = ethers.utils.parseEther(amount);
+    const data = await contract.call("donateToCampaign", [pId], {
+      value: etherValue,
+    });
 
     return data;
-  }
-  
+  };
 
   const getDonations = async (pId) => {
     const donations = await contract.call("getDonators", [pId]);
@@ -82,6 +93,16 @@ export const StateContextProvider = ({ children }) => {
     return parsedDonations;
   };
 
+  // const isAdmin = async () => {
+  //   try {
+  //     const owner = await contractAdmin.call("owner");
+  //     return owner === address;
+  //   } catch (error) {
+  //     console.error("Error checking admin status:", error);
+  //     return false;
+  //   }
+  // };
+
   return (
     <StateContext.Provider
       value={{
@@ -92,6 +113,7 @@ export const StateContextProvider = ({ children }) => {
         getRequestList,
         donate,
         getDonations,
+        // isAdmin,
       }}
     >
       {children}

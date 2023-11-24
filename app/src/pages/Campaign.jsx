@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import { useStateContext } from "../context";
 import { DisplayCampaigns } from "../components";
-import CampaignDetails from "./CampaignDetails";
 
 const Campaign = () => {
   const [isLoading, setIsLoading] = useState(false);

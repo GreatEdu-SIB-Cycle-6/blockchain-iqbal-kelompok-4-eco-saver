@@ -42,7 +42,7 @@ const CampaignDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const campaigns = await getRequestList(); // Call the function here
+        const campaigns = await getRequestList();
         const ownerCampaigns = campaigns.filter(
           (campaign) =>
             campaign.owner.trim().toLowerCase() ===
@@ -54,7 +54,7 @@ const CampaignDetails = () => {
       }
     };
   
-    fetchData(); // Call the function here
+    fetchData(); 
   }, [getRequestList, state.owner]);
   
 
@@ -125,7 +125,22 @@ const CampaignDetails = () => {
               </div>
             </div>
           </div>
-
+          <div>
+            <h4
+              className="font-['Poppins'] font-bold text-[16px] text-white
+        uppercase"
+            >
+              Title
+            </h4>
+            <div className="mt-[20px]">
+              <p
+                className="font-['Poppins'] font-normal text-[16px] text-[#808191]
+            leading-[26px] text-justify"
+              >
+                {state.title}
+              </p>
+            </div>
+          </div>
           <div>
             <h4
               className="font-['Poppins'] font-bold text-[16px] text-white
