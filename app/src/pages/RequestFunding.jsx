@@ -39,8 +39,6 @@ const RequestFunding = () => {
         setForm({ ...form, image: "" });
       }
     });
-
-    // console.log(form);
   };
 
   return (

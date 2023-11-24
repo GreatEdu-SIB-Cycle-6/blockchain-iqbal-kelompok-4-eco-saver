@@ -1,11 +1,32 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+
+import { useStateContext } from "../context";
+import { DisplayCampaigns } from "../components";
+import CampaignDetails from "./CampaignDetails";
 
 const Campaign = () => {
-  return (
-    <div>
-      <h1>Campaign</h1>
-    </div>
-  )
-}
+  const [isLoading, setIsLoading] = useState(false);
+  const [campaigns, setCampaigns] = useState([]);
 
-export default Campaign
+  const { address, contract, getRequestList } = useStateContext();
+
+  const fetchCampaigns = async () => {
+    setIsLoading(true);
+    const data = await getRequestList();
+    setCampaigns(data);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (contract) fetchCampaigns();
+  }, [address, contract]);
+  return (
+    <DisplayCampaigns
+      title="All Campaigns"
+      isLoading={isLoading}
+      campaigns={campaigns}
+    />
+  );
+};
+
+export default Campaign;

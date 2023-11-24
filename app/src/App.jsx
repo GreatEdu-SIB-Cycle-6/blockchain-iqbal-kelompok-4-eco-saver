@@ -16,7 +16,6 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/campaign" element={<Campaign />} />
@@ -24,7 +23,7 @@ const App = () => {
         <Route path="/approve-funding" element={<ApproveFunding />} />
         <Route path="/rewards" element={<Rewards />} />
         <Route path="/about" element={<About />} />
-        <Route path="/campaign-details:id" element={<CampaignDetails />} />
+        <Route path="/campaign-details/:id" element={<CampaignDetails/>} />
       </Routes>
       <Footer />
     </div>
