@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
 
+import UnauthorizedPages from "./UnauthorizedPages";
 import { useStateContext } from "../context";
 
 const DashboardAdmin = () => {
   const [campaigns, setCampaigns] = useState([]);
+  const [isUserAdmin, setIsUserAdmin] = useState(false);
+  // const navigate = useNavigate();
   const {
     address,
     contract,
@@ -19,13 +23,19 @@ const DashboardAdmin = () => {
     const fetchCampaigns = async (account) => {
       try {
         const UserisAdmin = await isAdmin(account);
-        console.log(UserisAdmin);
+        console.log("userIsAdmin", UserisAdmin);
         if (UserisAdmin) {
+          setIsUserAdmin(true);
           const data = await getRequestList();
           setCampaigns(data);
+        } else {
+          setIsUserAdmin(false);
         }
+        // if (!UserisAdmin) {
+        //   navigate("/unauthorized");
+        // }
       } catch (error) {
-        console.error("Error fetching campaigns:", error);
+        console.error("Error fetching data campaigns:", error);
       }
     };
     if (contract || contractAdmin) {
@@ -36,6 +46,7 @@ const DashboardAdmin = () => {
     }
   }, [address, contract, isAdmin, contractAdmin]);
 
+  
   const handleAccept = async (pId) => {
     try {
       await approveCampaign(pId);
@@ -49,17 +60,15 @@ const DashboardAdmin = () => {
   const handleReject = async (pId) => {
     try {
       await rejectCampaign(pId);
-      // const updateCampaigns = await getCampaigns();
-      // setCampaigns(updateCampaigns);
     } catch (err) {
       console.error("error", err);
     }
   };
-
+  console.log("isUserAdmin : ", isUserAdmin);
   return (
     <div className="container mx-auto p-4 ">
-      {isAdmin ? (
-        <>
+      {isUserAdmin ? (
+        <div>
           <h1 className="text-2xl font-bold mb-4 text-white">
             Admin Dashboard
           </h1>
@@ -103,9 +112,9 @@ const DashboardAdmin = () => {
               ))}
             </tbody>
           </table>
-        </>
+        </div>
       ) : (
-        <div>Tidak diizinkan</div>
+        <UnauthorizedPages />
       )}
     </div>
   );

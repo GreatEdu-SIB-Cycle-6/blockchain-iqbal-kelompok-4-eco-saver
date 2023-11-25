@@ -10,7 +10,8 @@ import {
   Rewards,
   About,
   CampaignDetails,
-  DashboardAdmin
+  DashboardAdmin,
+  UnathorizedPages
 } from "./pages";
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/campaign-details/:id" element={<CampaignDetails/>} />
         <Route path="dashboard-admin" element={<DashboardAdmin/>}/>
+        <Route path="unauthorized" element={<UnathorizedPages/>}/>
       </Routes>
       <Footer />
     </div>
