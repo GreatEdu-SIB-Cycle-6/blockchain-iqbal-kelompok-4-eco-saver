@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { errors, ethers } from "ethers";
 
 import { useStateContext } from "../context";
 import { CustomButton, CountBox, Loader } from "../components";
@@ -22,7 +21,6 @@ const CampaignDetails = () => {
 
   const fetchDonators = async () => {
     const data = await getDonations(state.pId);
-
     setDonators(data);
   };
 

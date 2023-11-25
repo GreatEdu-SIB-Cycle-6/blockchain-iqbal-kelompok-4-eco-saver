@@ -7,11 +7,11 @@ const Campaign = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
 
-  const { address, contract, getRequestList } = useStateContext();
+  const { address, contract, getCampaigns } = useStateContext();
 
   const fetchCampaigns = async () => {
     setIsLoading(true);
-    const data = await getRequestList();
+    const data = await getCampaigns();
     setCampaigns(data);
     setIsLoading(false);
   };

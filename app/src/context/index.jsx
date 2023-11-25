@@ -15,11 +15,11 @@ export const StateContextProvider = ({ children }) => {
     "0xd98ccb2097efA33aE4341b1Bf432f3dA61f39e19"
   );
 
-  const { contractAdmin } = useContract(
+  const contractAdmin = useContract(
     "0x8Da107637428A1D4E5FACD84cB93225EFEc78108"
-  );
+  ).contract;
 
-  console.log(contractAdmin);
+  // console.log(contractAdmin);
 
   // Write Request Campaign
   const { mutateAsync: requestCampaign } = useContractWrite(
@@ -27,6 +27,7 @@ export const StateContextProvider = ({ children }) => {
     "requestCampaign"
   );
   const address = useAddress();
+  // console.log(address)
   const connect = useMetamask();
 
   const publishCampaign = async (form) => {
@@ -34,7 +35,6 @@ export const StateContextProvider = ({ children }) => {
       const data = await requestCampaign({
         args: [
           address,
-          form.name,
           form.title,
           form.description,
           form.target.toString(),
@@ -92,16 +92,64 @@ export const StateContextProvider = ({ children }) => {
     }
     return parsedDonations;
   };
+  // const { data } = useContractRead(contract, "isAdminExist", [account])
+  const isAdmin = async (account) => {
+    try {
+      console.log("address :", account)
+      console.log("contract admin", contractAdmin);
+      const result = await contractAdmin.call("isAdminExist", [account]);
+      return result;
+    } catch (error) {
+      console.error("Error checking admin existence:", error);
+      return false;
+    }
+  };
 
-  // const isAdmin = async () => {
-  //   try {
-  //     const owner = await contractAdmin.call("owner");
-  //     return owner === address;
-  //   } catch (error) {
-  //     console.error("Error checking admin status:", error);
-  //     return false;
-  //   }
-  // };
+  const { mutateAsync: approveRequest } = useContractWrite(
+    contract,
+    "approveRequest"
+  );
+  const approveCampaign = async (pId) => {
+    try {
+      const data = await approveRequest({ args: [pId] });
+      console.info("contract call successs", data);
+    } catch (err) {
+      console.error("contract call failure", err);
+    }
+  };
+
+  const { mutateAsync: rejectRequest } = useContractWrite(
+    contract,
+    "rejectRequest"
+  );
+  const rejectCampaign = async (pId) => {
+    try {
+      const data = await rejectRequest({ args: [pId] });
+      console.info("contract call successs", data);
+    } catch (err) {
+      console.error("contract call failure", err);
+    }
+  };
+
+  const getCampaigns = async () => {
+    const campaigns = await contract.call("getCampaigns");
+    const parsedCampaigns = campaigns.map((campaign, index) => ({
+      owner: campaign.owner,
+      title: campaign.title,
+      name: campaign.name,
+      requester: campaign.requester,
+      description: campaign.description,
+      target: ethers.utils.formatEther(campaign.target.toString()),
+      deadline: campaign.deadline.toNumber(),
+      amountCollected: ethers.utils.formatEther(
+        campaign.amountCollected.toString()
+      ),
+      image: campaign.image,
+      pId: index,
+    }));
+
+    return parsedCampaigns;
+  };
 
   return (
     <StateContext.Provider
@@ -113,7 +161,10 @@ export const StateContextProvider = ({ children }) => {
         getRequestList,
         donate,
         getDonations,
-        // isAdmin,
+        isAdmin,
+        approveCampaign,
+        getCampaigns,
+        rejectCampaign,
       }}
     >
       {children}
