@@ -7,7 +7,7 @@ import { calculateBarPercentage, daysLeft } from "../utils";
 
 const CampaignDetails = () => {
   const { state } = useLocation();
-  const { donate, getDonations, contract, address, getRequestList } =
+  const { donate, getDonations, contract, address, getRequestList, getCampaigns} =
     useStateContext();
   const [donators, setDonators] = useState([]);
 
@@ -40,7 +40,7 @@ const CampaignDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const campaigns = await getRequestList();
+        const campaigns = await getCampaigns();
         const ownerCampaigns = campaigns.filter(
           (campaign) =>
             campaign.owner.trim().toLowerCase() ===
@@ -53,7 +53,7 @@ const CampaignDetails = () => {
     };
   
     fetchData(); 
-  }, [getRequestList, state.owner]);
+  }, [getCampaigns, state.owner]);
   
 
   return (
