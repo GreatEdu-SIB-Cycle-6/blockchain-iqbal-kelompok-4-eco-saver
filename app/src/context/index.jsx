@@ -12,7 +12,7 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
-    "0xd98ccb2097efA33aE4341b1Bf432f3dA61f39e19"
+    "0xf988E3c1F02362D80bbB9f979AF2708baDdc7EA5"
   );
 
   const contractAdmin = useContract(
@@ -109,6 +109,7 @@ export const StateContextProvider = ({ children }) => {
     contract,
     "approveRequest"
   );
+
   const approveCampaign = async (pId) => {
     try {
       const data = await approveRequest({ args: [pId] });
