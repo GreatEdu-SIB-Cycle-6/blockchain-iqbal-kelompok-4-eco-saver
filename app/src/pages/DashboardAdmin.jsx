@@ -63,7 +63,7 @@ const DashboardAdmin = () => {
       console.error("error", err);
     }
   };
-  console.log("isUserAdmin : ", isUserAdmin);
+  // console.log("isUserAdmin : ", isUserAdmin);
   return (
     <div className="container mx-auto p-4 ">
       {isUserAdmin ? (

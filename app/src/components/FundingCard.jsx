@@ -16,13 +16,13 @@ const FundingCard = ({
 
   return (
     <div
-      className="md:w-[280px] md:h-[480px] mb-[100px] w-[270px] h-[415px] rounded-[15px] bg-[#14213d] cursor-pointer"
+      className="md:w-[280px] md:h-[480px] md:mb-[100px] my-auto w-[290px] rounded-[15px] bg-[#14213d] cursor-pointer"
       onClick={handleClick}
     >
       <img
         src={image}
         alt="fund"
-        className="md:w-[300px] w-[300px] h-[200px] md:h-[264px] object-cover rounded-[15px]"
+        className="md:w-[300px] md:h-[264px] w-[290px] my-auto object-cover rounded-[15px]"
       />
       <div className="flex flex-col p-4">
         <div className="flex flex-row items-center mb-[18px]">

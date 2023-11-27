@@ -3,7 +3,6 @@ import { Hero } from "../components";
 
 import ParticleBackground from "../components/ParticleBackground";
 
-
 const Home = () => {
   return (
     <div>

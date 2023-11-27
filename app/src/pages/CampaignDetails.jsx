@@ -2,18 +2,27 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { useStateContext } from "../context";
-import { CustomButton, CountBox, Loader } from "../components";
+import { CustomButton, CountBox, Loader, ReleaseButton } from "../components";
 import { calculateBarPercentage, daysLeft } from "../utils";
 
 const CampaignDetails = () => {
   const { state } = useLocation();
-  const { donate, getDonations, contract, address, getRequestList, getCampaigns} =
-    useStateContext();
+  const {
+    donate,
+    getDonations,
+    contract,
+    address,
+    getCampaigns,
+    releaseFundCampaign,
+    isAdmin,
+    contractAdmin,
+  } = useStateContext();
   const [donators, setDonators] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState("");
   const [ownerCampaignCount, setOwnerCampaignCount] = useState(0);
+  const [isUserAdmin, setIsUserAdmin] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,6 +31,13 @@ const CampaignDetails = () => {
   const fetchDonators = async () => {
     const data = await getDonations(state.pId);
     setDonators(data);
+  };
+
+  const handleRelease = async () => {
+    setIsLoading(true);
+
+    await releaseFundCampaign(state.pId, amount);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -51,10 +67,31 @@ const CampaignDetails = () => {
         console.error("Error fetching data:", error);
       }
     };
-  
-    fetchData(); 
+
+    fetchData();
   }, [getCampaigns, state.owner]);
-  
+
+  useEffect(() => {
+    const fetchCampaigns = async (account) => {
+      try {
+        const UserisAdmin = await isAdmin(account);
+        console.log("userIsAdmin", UserisAdmin);
+        if (UserisAdmin) {
+          setIsUserAdmin(true);
+        } else {
+          setIsUserAdmin(false);
+        }
+      } catch (error) {
+        console.error("Error fetching data campaigns:", error);
+      }
+    };
+    if (contract || contractAdmin) {
+      console.log("contract available");
+      if (address != undefined) {
+        fetchCampaigns(address);
+      }
+    }
+  }, [address, contract, isAdmin, contractAdmin]);
 
   return (
     <div>
@@ -224,12 +261,25 @@ const CampaignDetails = () => {
                   sustainability
                 </p>
               </div>
-              <CustomButton
-                btnType="button"
-                title="Fund Campaign"
-                styles="w-full bg-[#8c6dfd]"
-                handleClick={handleDonate}
-              />
+              {isUserAdmin ? (
+                <div>
+                  <ReleaseButton
+                    btnType="button"
+                    title="Release Fund"
+                    styles="w-full bg-[#3f37c9]"
+                    handleClick={handleRelease}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <CustomButton
+                    btnType="button"
+                    title="Fund Campaign"
+                    styles="w-full bg-[#8c6dfd]"
+                    handleClick={handleDonate}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -95,7 +95,7 @@ export const StateContextProvider = ({ children }) => {
   // const { data } = useContractRead(contract, "isAdminExist", [account])
   const isAdmin = async (account) => {
     try {
-      console.log("address :", account)
+      console.log("address :", account);
       console.log("contract admin", contractAdmin);
       const result = await contractAdmin.call("isAdminExist", [account]);
       return result;
@@ -129,6 +129,21 @@ export const StateContextProvider = ({ children }) => {
       console.info("contract call successs", data);
     } catch (err) {
       console.error("contract call failure", err);
+    }
+  };
+
+  const { mutateAsync: releaseFunds } = useContractWrite(
+    contract,
+    "releaseFunds"
+  );
+  const releaseFundCampaign = async (pId) => {
+    try {
+      const data = await releaseFunds({
+        args: [pId]
+      });
+      console.log("Contract call Success", data);
+    } catch (err) {
+      console.error("Contract call failure", err);
     }
   };
 
@@ -166,6 +181,7 @@ export const StateContextProvider = ({ children }) => {
         approveCampaign,
         getCampaigns,
         rejectCampaign,
+        releaseFundCampaign,
       }}
     >
       {children}
