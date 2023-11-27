@@ -16,7 +16,7 @@ const FundingCard = ({
 
   return (
     <div
-      className="md:w-[280px] md:h-[480px] md:mb-[100px] my-auto w-[290px] rounded-[15px] bg-[#14213d] cursor-pointer"
+      className="md:w-[280px] md:h-[480px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d] cursor-pointer"
       onClick={handleClick}
     >
       <img
@@ -26,11 +26,6 @@ const FundingCard = ({
       />
       <div className="flex flex-col p-4">
         <div className="flex flex-row items-center mb-[18px]">
-          {/* <img
-            src="https://seeklogo.com/images/R/Republic_of_Indonesia_Flag-logo-3E5321CC56-seeklogo.com.png"
-            alt="tag"
-            className="w-[17px] h-[17px] object-contain"
-          /> */}
           <p className="ml-[2px] font-['Poppins'] font-medium text-[12px] text-[#98f5e1]">
             Keberlanjutan Lingkungan
           </p>

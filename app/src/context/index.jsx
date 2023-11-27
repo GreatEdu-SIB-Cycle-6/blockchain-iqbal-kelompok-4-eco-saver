@@ -139,7 +139,7 @@ export const StateContextProvider = ({ children }) => {
   const releaseFundCampaign = async (pId) => {
     try {
       const data = await releaseFunds({
-        args: [pId]
+        args: [pId],
       });
       console.log("Contract call Success", data);
     } catch (err) {
@@ -149,7 +149,12 @@ export const StateContextProvider = ({ children }) => {
 
   const getCampaigns = async () => {
     const campaigns = await contract.call("getCampaigns");
-    const parsedCampaigns = campaigns.map((campaign, index) => ({
+
+    const activeCampaigns = campaigns.filter(
+      (campaign) => !campaign.isReleased
+    );
+    console.log(activeCampaigns);
+    const parsedCampaigns = activeCampaigns.map((campaign, index) => ({
       owner: campaign.owner,
       title: campaign.title,
       name: campaign.name,
@@ -162,6 +167,7 @@ export const StateContextProvider = ({ children }) => {
       ),
       image: campaign.image,
       pId: index,
+      isReleased : campaign.isReleased || false,
     }));
 
     return parsedCampaigns;
