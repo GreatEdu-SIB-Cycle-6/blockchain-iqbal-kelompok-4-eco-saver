@@ -37,7 +37,7 @@ const NavBar = () => {
               onClick={() => handleNavItemClick(index)}
               className={`p-4 font-['Poppins'] text-[#BDBDBD]${
                 activeNavItem === index ? "text-white" : ""
-              }`}
+              } hover:text-white`}
             >
               {item.label}
             </li>

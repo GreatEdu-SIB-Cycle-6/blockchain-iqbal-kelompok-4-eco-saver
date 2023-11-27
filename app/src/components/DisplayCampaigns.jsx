@@ -21,7 +21,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
   const campaignToDisplay = searchTerm ? filteredCampaign : campaigns;
 
   return (
-    <div className="w-full md:mt-[50px] mt-5 ml-12 flex flex-col gap-[30px] md:ml-[120px] ">
+    <div className="w-full md:mt-4 mt-5 ml-12 flex flex-col gap-[30px] md:ml-[120px] ">
       <h1 className="font-['Poppins'] text-white font-semibold text-[18px] text-left">
         {title} ({campaigns.length})
       </h1>
@@ -43,12 +43,12 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
             className="w-[100px] h-[100px] object-contain"
           />
         )}
-        {!isLoading && campaignToDisplay.length === 0 && (
+        {isLoading && campaignToDisplay.length < 0 && (
           <p className="font-['Poppins'] font-medium text-[15px] leading-[30px] text-white">
              Tidak ada acara yang sesuai dengan penelusuran.
           </p>
         )}
-        {!isLoading && campaignToDisplay.length < 0 && (
+        {!isLoading && campaignToDisplay.length === 0 && (
           <p className="font-['Poppins'] font-medium text-[15px] leading-[30px] text-white">
              Belum ada acara yang dibuat.
           </p>

@@ -12,7 +12,7 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
-    "0xf988E3c1F02362D80bbB9f979AF2708baDdc7EA5"
+    "0xc6DD0083c7dfE1fB2c8f658753e100bBe10859C4"
   );
 
   const contractAdmin = useContract(
@@ -105,7 +105,6 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
-
   const { mutateAsync: approveRequest } = useContractWrite(
     contract,
     "approveRequest"
@@ -150,11 +149,8 @@ export const StateContextProvider = ({ children }) => {
 
   const getCampaigns = async () => {
     const campaigns = await contract.call("getCampaigns");
-
-    const activeCampaigns = campaigns.filter(
-      (campaign) => campaign.isReleased === false
-    );
-    console.log(activeCampaigns);
+    const activeCampaigns = campaigns.filter((campaign) => campaign.isReleased === false)
+    console.log("aktif" ,activeCampaigns);
     const parsedCampaigns = activeCampaigns.map((campaign, index) => ({
       owner: campaign.owner,
       title: campaign.title,
@@ -168,9 +164,9 @@ export const StateContextProvider = ({ children }) => {
       ),
       image: campaign.image,
       pId: index,
-      isReleased : campaign.isReleased || false,
+      isReleasedCampaign: campaign.isReleased || false,
     }));
-
+    console.log("parsedcampaign", parsedCampaigns);
     return parsedCampaigns;
   };
 

@@ -23,7 +23,7 @@ const DashboardAdmin = () => {
     const fetchCampaigns = async (account) => {
       try {
         const UserisAdmin = await isAdmin(account);
-        // console.log("userIsAdmin", UserisAdmin);
+        console.log("userIsAdmin", UserisAdmin);
         if (UserisAdmin) {
           setIsUserAdmin(true);
           const data = await getRequestList();
