@@ -105,6 +105,7 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
+
   const { mutateAsync: approveRequest } = useContractWrite(
     contract,
     "approveRequest"
@@ -151,7 +152,7 @@ export const StateContextProvider = ({ children }) => {
     const campaigns = await contract.call("getCampaigns");
 
     const activeCampaigns = campaigns.filter(
-      (campaign) => !campaign.isReleased
+      (campaign) => campaign.isReleased === false
     );
     console.log(activeCampaigns);
     const parsedCampaigns = activeCampaigns.map((campaign, index) => ({

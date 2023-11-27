@@ -1,21 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { loader } from "../assets";
 import { v4 as uuidv4 } from "uuid";
 import FundingCard from "./FundingCard";
+import SearchButton from "./SearchButton";
 
 const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+
   const handleNavigate = (campaign) => {
     navigate(`/campaign-details/${campaign.title}`, { state: campaign });
   };
 
+  const filteredCampaign = campaigns.filter((campaign) =>
+    campaign.title.toLowerCase().startsWith(searchTerm.toLowerCase())
+  );
+
+  const campaignToDisplay = searchTerm ? filteredCampaign : campaigns;
+
   return (
-    <div className="w-full mt-[50px] ml-12 flex flex-col gap-[30px] md:ml-[120px] ">
+    <div className="w-full md:mt-[50px] mt-5 ml-12 flex flex-col gap-[30px] md:ml-[120px] ">
       <h1 className="font-['Poppins'] text-white font-semibold text-[18px] text-left">
         {title} ({campaigns.length})
       </h1>
+      <div>
+        <SearchButton
+          type="text"
+          placeholder="Search Campaign..."
+          className="p-2 border border-gray-300 rounded-[10px]"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+        />
+      </div>
+
       <div className="flex flex-wrap mt-1 gap-[26px]">
         {isLoading && (
           <img
@@ -24,14 +43,19 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
             className="w-[100px] h-[100px] object-contain"
           />
         )}
-        {!isLoading && campaigns.length === 0 && (
-          <p className="font-['Poppins'] font-semibold text-[15px] leading-[30px] text-white">
-            Belum ada acara yang dibuat.
+        {!isLoading && campaignToDisplay.length === 0 && (
+          <p className="font-['Poppins'] font-medium text-[15px] leading-[30px] text-white">
+             Tidak ada acara yang sesuai dengan penelusuran.
+          </p>
+        )}
+        {!isLoading && campaignToDisplay.length < 0 && (
+          <p className="font-['Poppins'] font-medium text-[15px] leading-[30px] text-white">
+             Belum ada acara yang dibuat.
           </p>
         )}
         {!isLoading &&
-          campaigns.length > 0 &&
-          campaigns.map((campaign) => (
+          campaignToDisplay.length > 0 &&
+          campaignToDisplay.map((campaign) => (
             <FundingCard
               key={uuidv4()}
               {...campaign}

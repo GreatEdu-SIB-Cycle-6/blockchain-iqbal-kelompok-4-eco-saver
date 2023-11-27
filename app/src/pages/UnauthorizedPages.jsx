@@ -1,11 +1,11 @@
 import React from "react";
-import imageNotAdmin from "../assets/notAdmin.png";
+import { notAdmin } from "../assets";
 
 const UnauthorizedPages = () => {
   return (
     <div className="flex items-center justify-center h-screen">
       <img
-        src={imageNotAdmin}
+        src={notAdmin}
         className="w-[500px] h-[500px] mx-auto py-10 ml-[140px] mb-40"
         alt="not-admin"
       />
