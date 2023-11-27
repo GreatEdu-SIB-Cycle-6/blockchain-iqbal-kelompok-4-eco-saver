@@ -12,7 +12,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
   };
 
   return (
-    <div className="w-full mt-[50px] flex flex-col gap-[30px] md:ml-[120px] ml-4">
+    <div className="w-full mt-[50px] ml-12 flex flex-col gap-[30px] md:ml-[120px] ">
       <h1 className="font-['Poppins'] text-white font-semibold text-[18px] text-left">
         {title} ({campaigns.length})
       </h1>
