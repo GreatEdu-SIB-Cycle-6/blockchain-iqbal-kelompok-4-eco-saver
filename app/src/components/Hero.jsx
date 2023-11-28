@@ -38,9 +38,9 @@ const Hero = () => {
             for a Sustainable Environment.
           </p>
           <button
-            className={`text-center text-white sm:text-xl sm:p-4 p-1 whitespace-nowrap font-medium text-sm font-['Poppins'] md:text-[15px] md:w-[150px] md:h-[50px] sm:w-[90px] mx-auto py-3 my-6 rounded-lg justify-center items-center inline-flex
+            className={`border-[2px] border-[#3943b7] bg-transparent text-center text-white sm:text-xl sm:p-4 p-1 whitespace-nowrap font-medium text-sm font-['Poppins'] md:text-[15px] md:w-[150px] md:h-[50px] sm:w-[90px] mx-auto py-3 my-6 rounded-lg justify-center items-center inline-flex
         ${
-          activeButton ? "bg-gradient-to-b from-blue-950 to-blue-500" : "bg-gradient-to-b from-blue-500 to-blue-950 hover:from-blue-500 hover:to-blue-800 hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out"
+          activeButton ? "border-[2px] border-[#3943b7] bg-transparent " : "hover:bg-[#3943b7]"
           }`}
             onClick={handleActiveRequestFundingButton}
           >
@@ -48,11 +48,11 @@ const Hero = () => {
           </button>
 
           <button
-            className={`ml-4 text-center text-white sm:text-xl sm:p-4 p-1 font-medium text-sm font-['Poppins'] md:text-[15px] md:w-[150px] md:h-[50px] sm:w-[90px] mx-auto py-3 my-6 bg-gradient-to-r from-green-400 to-green-600 rounded-lg justify-center items-center inline-flex
+            className={`border-[2px] border-[#52b788] ml-4 text-center text-white sm:text-xl sm:p-4 p-1 font-medium text-sm font-['Poppins'] md:text-[15px] md:w-[150px] md:h-[50px] sm:w-[90px] mx-auto py-3 my-6 rounded-lg justify-center items-center inline-flex
         ${
-          activeButton ? "bg-gradient-to-r from-green-950 to-green-500 " : "bg-gradient-to-r from-green-400 to-green-600  hover:from-green-400 hover:to-green-800 hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out"
+          activeButton ? "bg-transparent border-[2px] border-[#52b788]" : "hover:bg-[#52b788] "
           }`}
-            onClick={handleActiveRequestFundingButton}
+            onClick={handleActiveCampaignButton}
           >
             Campaign
           </button>

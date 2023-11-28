@@ -28,7 +28,7 @@ const FormField = ({
           rows={10}
           placeholder={placeholder}
           className="py-[15px] sm:px-[25px] px-[15px] bg-transparent font-['Poppins'] text-white text-[14px]
-          placeholder:text-[#4b5264] rounded-[10px] sm:min-w-[300px] outline-none border-[1px]"
+          placeholder:text-[#4b5264] rounded-[10px] sm:min-w-[300px] outline-none border border-[#14213d]"
         />
       ) : (
         <input
@@ -39,7 +39,7 @@ const FormField = ({
           step="0.1"
           placeholder={placeholder}
           className="py-[15px] sm:px-[25px] px-[15px] bg-transparent font-['Poppins'] text-white text-[14px]
-          placeholder:text-[#4b5264] rounded-[10px] sm:min-w-[300px] outline-none border-[1px]"
+          placeholder:text-[#4b5264] rounded-[10px] sm:min-w-[300px] outline-none border border-[#14213d]"
         />
       )}
     </label>

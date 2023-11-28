@@ -42,10 +42,10 @@ const RequestFunding = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-black to-slate-900 flex flex-col rounded-[10px] sm:p-10 p-4 md:items-center md:justify-center">
+    <div className="max-w-[1000px] mx-auto border-solid border-2 border-[#14213d] flex flex-col rounded-[10px] sm:p-10 p-4 md:items-center md:justify-center">
       {isLoading && <Loader/>}
-      <div className="flex justify-center items-center p-[16px] sm:min-w-[150px] bg-[#4f4ffd] rounded-[10px]">
-        <h1 className="font-['Poppins'] item-start font-semibold text-white sm:text-[25px] text-[21px] leading-[38px]">
+      <div className="flex justify-center items-center p-[16px] sm:min-w-[150px] bg-transparent border-[#22223b] border rounded-[10px]">
+        <h1 className="font-['Poppins'] item-start font-medium text-white sm:text-[25px] text-[21px] leading-[38px]">
           Start Request Funding
         </h1>
       </div>
@@ -99,11 +99,11 @@ const RequestFunding = () => {
           value={form.image}
           handleChange={(event) => handleFormFieldChange("image", event)}
         />
-        <div className="flex justify-center items-center mb-4">
+        <div className="flex justify-center items-center">
           <CustomButton
             btnType="submit"
-            title="Submit Campaign"
-            styles="bg-[#1dc071]"
+            title="Request Campaign"
+            styles="bg-transparent border border-[#52b788] hover:bg-[#52b788] text-white"
           />
         </div>
       </form>
