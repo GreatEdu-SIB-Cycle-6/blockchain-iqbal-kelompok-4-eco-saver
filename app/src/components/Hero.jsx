@@ -19,10 +19,10 @@ const Hero = () => {
   return (
     <div className="text-white">
       <div className="max-w-[1200px] mt-[-100px] w-full h-screen mx-auto text-center flex flex-col justify-center">
-        <p className="md:text-[65px] md:whitespace-nowrap font-normal p-2 font-['Poppins'] tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-500">
+        <p className="md:text-[65px] md:whitespace-nowrap font-semibold p-2 font-['Poppins'] tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-500">
           Join The Green Revolution
         </p>
-        <h1 className="md:text-5xl sm:text-6xl font-normal md:py-6 font-['Poppins'] tracking-wide">
+        <h1 className="md:text-5xl sm:text-6xl font-medium md:py-6 font-['Poppins'] tracking-wide">
           Blockchain Crowdfunding
         </h1>
         <div>
