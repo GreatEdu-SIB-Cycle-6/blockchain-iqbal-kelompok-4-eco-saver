@@ -1,17 +1,14 @@
-import React from "react";
+import React from 'react'
 
-const CountBox = ({ title, value }) => {
+import { loader } from "../assets"
+
+const Loader = () => {
   return (
-    <div className="flex flex-col items-center w-[150px]">
-      <h4
-        className="font-['Poppins'] font-bold text-[30px] text-white p-3 rounded-t-[10px] w-full text-center truncate"
-      >
-        {value}
-      </h4>
-      <p className="font-['Poppins'] font-normal text-[16px] text-[#808191] px-3 py-2 w-full
-      rounded-b-[10px] text-center">{title}</p>
-    </div>
-  );
-};
+    <div className='fixed inset-0 z-10 h-screen bg-[rgba(0,0,0,0.7)] flex items-center justify-center flex-col'>
+      <img src={loader} alt="loader" className='w-[100px] h-[100px] object-contain' />
+      <p className='mt-[20px] font-epilogue font-bold text-[20px] text-center text-white'>Transaction is in progress <br />Please wait...</p>
+      </div>
+  )
+}
 
-export default CountBox;
+export default Loader

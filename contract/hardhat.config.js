@@ -23,7 +23,8 @@ module.exports = {
     version: "0.8.20",
     defaultNetwork : 'bsc',
     networks : {
-      hardhat : {},
+      hardhat : {
+      },
       bscTestnet: {
         url: "https://bsc-testnet.publicnode.com",
         accounts : [`0x${process.env.PRIVATE_KEY}`],

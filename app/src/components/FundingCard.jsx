@@ -15,6 +15,7 @@ const FundingCard = ({
   const remainingDays = daysLeft(deadline);
 
   return (
+    
     <div
       className="md:w-[280px] md:h-[480px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d] cursor-pointer"
       onClick={handleClick}

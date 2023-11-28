@@ -5,6 +5,7 @@ import { loader } from "../assets";
 import { v4 as uuidv4 } from "uuid";
 import FundingCard from "./FundingCard";
 import SearchButton from "./SearchButton";
+import SkeletonLoading from "./SkeletonLoading";
 
 const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
   const navigate = useNavigate();
@@ -35,13 +36,11 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
         />
       </div>
 
-      <div className="flex flex-wrap mt-1 gap-[26px]">
+      <div className="flex flex-wrap mt-1 gap-[30px]">
         {isLoading && (
-          <img
-            src={loader}
-            alt="loader"
-            className="w-[100px] h-[100px] object-contain"
-          />
+          Array.from({length : 4}).map((_, index) => (
+            <SkeletonLoading key={index}/>
+          ))
         )}
         {isLoading && campaignToDisplay.length < 0 && (
           <p className="font-['Poppins'] font-medium text-[15px] leading-[30px] text-white">

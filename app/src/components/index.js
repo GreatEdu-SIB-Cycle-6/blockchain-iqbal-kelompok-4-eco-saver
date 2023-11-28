@@ -8,3 +8,4 @@ export { default as CountBox } from "./CountBox";
 export { default as Loader } from "./Loader";
 export { default as ReleaseButton } from "./ReleaseButton";
 export { default as SearchButton } from "./SearchButton.jsx";
+export { default as SkeletonLoading } from "./SkeletonLoading.jsx";

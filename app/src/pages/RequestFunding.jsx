@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 
 import { useStateContext } from "../context";
 import { checkIfImage } from "../utils";
-import { FormField, CustomButton } from "../components";
+import { FormField, CustomButton, Loader } from "../components";
 
 const RequestFunding = () => {
   const navigate = useNavigate();
@@ -28,11 +28,10 @@ const RequestFunding = () => {
     checkIfImage(form.image, async (exist) => {
       if (exist) {  
         setIsLoading(true);
-        const responseData = await requestCampaign({
+        await requestCampaign({
           ...form,
           target: ethers.utils.parseUnits(form.target, 18),
         });
-        const {name} = responseData;
         setIsLoading(false);
         navigate("/campaign");
       } else {
@@ -44,7 +43,7 @@ const RequestFunding = () => {
 
   return (
     <div className="bg-gradient-to-b from-black to-slate-900 flex flex-col rounded-[10px] sm:p-10 p-4 md:items-center md:justify-center">
-      {isLoading && "Loading...."}
+      {isLoading && <Loader/>}
       <div className="flex justify-center items-center p-[16px] sm:min-w-[150px] bg-[#4f4ffd] rounded-[10px]">
         <h1 className="font-['Poppins'] item-start font-semibold text-white sm:text-[25px] text-[21px] leading-[38px]">
           Start Request Funding
