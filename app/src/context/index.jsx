@@ -58,47 +58,6 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
-  const { mutateAsync: addItem } = useContractWrite(contractRewards, "addItem");
-
-  const addRewards = async (rewards) => {
-    try {
-      const data = await addItem({
-        args: [
-          rewards.name,
-          rewards.description,
-          rewards.rarity.toString(),
-          rewards.minAmount.toString(),
-          rewards.remaintingItem.toString(),
-          rewards.image,
-          rewards.isNft,
-        ],
-      });
-      console.log("data reward", data);
-      return data;
-    } catch (err) {
-      console.log("error fetching data", err);
-    }
-  };
-
-  const { mutateAsync: addMetadata } = useContractWrite(
-    contractEcoSaverNFT,
-    "addMetadata"
-  );
-
-  const addMetaDataEcoSaverNFT = async (metadataNFT) => {
-    try {
-      const data = await addMetadata({
-        args: [
-          metadataNFT.imgUri, 
-          metadataNFT.tokenUri
-        ],
-      });
-      return data;
-    } catch (err) {
-      console.log("error fetch data nft", err);
-    }
-  };
-
   const getRequestList = async () => {
     const campaigns = await contract.call("getRequestList");
     const parsedCampaigns = campaigns.map((campaign, index) => ({
@@ -118,6 +77,22 @@ export const StateContextProvider = ({ children }) => {
 
     return parsedCampaigns;
   };
+
+  const getRewardsList = async () => {
+    const rewards = await contractRewards.call("getRewardList");
+    const parsedRewards = rewards.map((reward, index) => ({
+      name : reward.name,
+      description : reward.description,
+      rarity : reward.rarity.toString(),
+      minAmount : ethers.utils.formatEther(reward.minAmount.toString()),
+      // remaintingItem : ethers.utils.formatEther(reward.remaintingItem.toString()),
+      remaintingItem : reward.remaintingItem,
+      image : reward.image,
+      isNft : reward.isNft,
+      pId : index,
+    }))
+    return parsedRewards;
+  }
 
   const donate = async (pId, amount) => {
     const etherValue = ethers.utils.parseEther(amount);
@@ -222,6 +197,44 @@ export const StateContextProvider = ({ children }) => {
     return parsedCampaigns;
   };
 
+  const { mutateAsync: addItem } = useContractWrite(contractRewards, "addItem");
+
+  const addRewards = async (rewards) => {
+    try {
+      const data = await addItem({
+        args: [
+          rewards.name,
+          rewards.description,
+          rewards.rarity.toString(),
+          rewards.minAmount.toString(),
+          rewards.remaintingItem.toString(),
+          rewards.image,
+          rewards.isNft,
+        ],
+      });
+      console.log("data reward", data);
+      return data;
+    } catch (err) {
+      console.log("error fetching data", err);
+    }
+  };
+
+  const { mutateAsync: addMetadata } = useContractWrite(
+    contractEcoSaverNFT,
+    "addMetadata"
+  );
+
+  const addMetaDataEcoSaverNFT = async (metadataNFT) => {
+    try {
+      const data = await addMetadata({
+        args: [metadataNFT.imgUri, metadataNFT.tokenUri],
+      });
+      return data;
+    } catch (err) {
+      console.log("error fetch data nft", err);
+    }
+  };
+
   return (
     <StateContext.Provider
       value={{
@@ -238,7 +251,8 @@ export const StateContextProvider = ({ children }) => {
         rejectCampaign,
         releaseFundCampaign,
         addItem: addRewards,
-        addMetadata : addMetaDataEcoSaverNFT,
+        addMetadata: addMetaDataEcoSaverNFT,
+        getRewardsList,
       }}
     >
       {children}

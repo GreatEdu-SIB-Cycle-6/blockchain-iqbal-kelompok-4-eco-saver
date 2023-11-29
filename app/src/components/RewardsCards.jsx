@@ -1,23 +1,16 @@
 import React from "react";
 
-import { daysLeft } from "../utils";
-
-const FundingCard = ({
-  owner,
-  title,
+const RewardsCards = ({
+  name,
   description,
-  target,
-  deadline,
-  amountCollected,
+  rarity,
+  minAmount,
+  remainingTime,
   image,
-  handleClick,
+  isNft,
 }) => {
-  const remainingDays = daysLeft(deadline);
   return (
-    <div
-      className="md:w-[280px] md:h-[480px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d] cursor-pointer"
-      onClick={handleClick}
-    >
+    <div className="md:w-[280px] md:h-[480px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d]">
       <img
         src={image}
         alt="fund"
@@ -31,7 +24,7 @@ const FundingCard = ({
         </div>
         <div className="block">
           <h3 className="font-['Poppins'] font-semibold text-[16px] text-white text-left leading-[25px] truncate">
-            {title}
+            {name}
           </h3>
           <p className="mt-[5px] font-['Poppins'] font-normal text-[#808191] text-left leading-[18px] truncate">
             {description}
@@ -40,7 +33,7 @@ const FundingCard = ({
         <div className="flex justify-between flex-wrap mt-[15px] gap-2">
           <div className="flex flex-col">
             <h4 className="font-['Poppins'] font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">
-              {remainingDays}
+              {rarity}
             </h4>
             <p
               className="mt-[3px] font-['Poppins'] font-normal text-[12px] leading-[18px] text-[#808191]
@@ -51,13 +44,13 @@ const FundingCard = ({
           </div>
           <div className="flex flex-col">
             <h4 className="font-['Poppins'] font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">
-              {amountCollected}
+              {minAmount}
             </h4>
             <p
               className="mt-[3px] font-['Poppins'] font-normal text-[12px] leading-[18px] text-[#808191]
             sm:max-w-[120px] truncate"
             >
-              Raised of <b className="text-white">{target}</b>
+              Raised of <b className="text-white">{remainingTime}</b>
             </p>
           </div>
         </div>
@@ -71,7 +64,7 @@ const FundingCard = ({
             />
           </div>
           <p className="font-['Poppins'] flex-1 font-normal text-[12px] text-[#808191] truncate">
-            <span className="text-white">{owner}</span>
+            <span className="text-white">{isNft}</span>
           </p>
         </div>
       </div>
@@ -79,4 +72,4 @@ const FundingCard = ({
   );
 };
 
-export default FundingCard;
+export default RewardsCards;

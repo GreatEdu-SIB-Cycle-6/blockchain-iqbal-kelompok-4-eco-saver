@@ -1,9 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+
+import { useStateContext } from "../context";
+import DisplayRewards from "../components/DisplayRewards";
 
 const Rewards = () => {
-  return (
-    <div>Rewards</div>
-  )
-}
+  const [isLoading, setIsLoading] = useState(false);
+  const [rewards, setRewards] = useState([]);
 
-export default Rewards
+  const {
+    address,
+    contract,
+    contractRewards,
+    contractEcoSaverNFT,
+    getRewardsList,
+  } = useStateContext();
+
+  const fetchRewards = async () => {
+    setIsLoading(true);
+    const data = await getRewardsList();
+    console.log("rewadr fetch", data);
+    setRewards(data);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (contract || contractRewards || contractEcoSaverNFT) fetchRewards();
+  }, [address, contractRewards, contractEcoSaverNFT, contract]);
+
+  return (
+    <DisplayRewards title="Rewards" isLoading={isLoading} rewards={rewards} />
+  );
+};
+
+export default Rewards;

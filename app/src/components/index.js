@@ -10,3 +10,5 @@ export { default as ReleaseButton } from "./ReleaseButton";
 export { default as SearchButton } from "./SearchButton.jsx";
 export { default as SkeletonLoading } from "./SkeletonLoading.jsx";
 export { default as FormAddRewards } from "./FormAddRewards.jsx";
+export { default as DisplayReward } from "./DisplayRewards.jsx";
+export { default as RewardsCards} from "./RewardsCards.jsx";

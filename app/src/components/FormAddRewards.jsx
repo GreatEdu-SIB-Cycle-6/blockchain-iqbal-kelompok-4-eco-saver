@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useStateContext } from "../context";
 import { ethers } from "ethers";
+
 import { checkIfImage } from "../utils";
+import Loader from "./Loader";
 
 const rewardsAddRewards = () => {
   const { addItem, addMetadata } = useStateContext();
   const [isNft, setIsNft] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [rewards, setRewards] = useState({
     name: "",
     description: "",
@@ -30,13 +33,12 @@ const rewardsAddRewards = () => {
 
     checkIfImage(rewards.image, async (exist) => {
       if (exist) {
+        setIsLoading(true);
         await addItem({
           ...rewards,
           minAmount: ethers.utils.parseUnits(rewards.minAmount, 18),
         });
-        //   setIsLoading(true);
-
-        //   setIsLoading(false);
+        setIsLoading(false);
       } else {
         alert("Masukkan link gambar yang valid!");
         setRewards({ ...rewards, image: "" });
@@ -65,6 +67,7 @@ const rewardsAddRewards = () => {
 
   return (
     <div className="rounded-[10px] font-poppins max-w-4xl mx-auto w-screen flex flex-col items-center justify-center border border-[#14213d]">
+      {isLoading && <Loader/>}
       <div className="my-6">
         <h1 className="text-white text-[40px] font-poppins">
           Add Rewards Dashboard
