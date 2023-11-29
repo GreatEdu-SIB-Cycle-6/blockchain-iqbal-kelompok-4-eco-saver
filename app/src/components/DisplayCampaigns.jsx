@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { loader } from "../assets";
 import { v4 as uuidv4 } from "uuid";
 import FundingCard from "./FundingCard";
 import SearchButton from "./SearchButton";

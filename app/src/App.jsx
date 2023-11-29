@@ -13,6 +13,7 @@ import {
   DashboardAdmin,
   UnathorizedPages
 } from "./pages";
+import AddRewards from "./pages/AddRewards";
 
 const App = () => {
   return (
@@ -26,8 +27,9 @@ const App = () => {
         <Route path="/rewards" element={<Rewards />} />
         <Route path="/about" element={<About />} />
         <Route path="/campaign-details/:id" element={<CampaignDetails/>} />
-        <Route path="dashboard-admin" element={<DashboardAdmin/>}/>
-        <Route path="unauthorized" element={<UnathorizedPages/>}/>
+        <Route path="/dashboard-admin" element={<DashboardAdmin/>}/>
+        <Route path="/unauthorized" element={<UnathorizedPages/>}/>
+        <Route path="/add-rewards" element={<AddRewards/>}/>
       </Routes>
       <Footer />
     </div>

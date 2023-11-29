@@ -19,7 +19,16 @@ export const StateContextProvider = ({ children }) => {
     "0x8Da107637428A1D4E5FACD84cB93225EFEc78108"
   ).contract;
 
-  // console.log(contractAdmin);
+  const contractRewards = useContract(
+    "0x1fD79A9D58C911032A1cF6eD41318219044DbF42"
+  ).contract;
+
+  const contractEcoSaverNFT = useContract(
+    "0x133272720610d669Fa4C5891Ab62a302455585Dd"
+  ).contract;
+
+  console.log("contract reward", contractRewards);
+  // console.log("contract nft", contractEcoSaverNFT);
 
   // Write Request Campaign
   const { mutateAsync: requestCampaign } = useContractWrite(
@@ -46,6 +55,47 @@ export const StateContextProvider = ({ children }) => {
       return data;
     } catch (error) {
       console.log("Error", error);
+    }
+  };
+
+  const { mutateAsync: addItem } = useContractWrite(contractRewards, "addItem");
+
+  const addRewards = async (rewards) => {
+    try {
+      const data = await addItem({
+        args: [
+          rewards.name,
+          rewards.description,
+          rewards.rarity.toString(),
+          rewards.minAmount.toString(),
+          rewards.remaintingItem.toString(),
+          rewards.image,
+          rewards.isNft,
+        ],
+      });
+      console.log("data reward", data);
+      return data;
+    } catch (err) {
+      console.log("error fetching data", err);
+    }
+  };
+
+  const { mutateAsync: addMetadata } = useContractWrite(
+    contractEcoSaverNFT,
+    "addMetadata"
+  );
+
+  const addMetaDataEcoSaverNFT = async (metadataNFT) => {
+    try {
+      const data = await addMetadata({
+        args: [
+          metadataNFT.imgUri, 
+          metadataNFT.tokenUri
+        ],
+      });
+      return data;
+    } catch (err) {
+      console.log("error fetch data nft", err);
     }
   };
 
@@ -95,8 +145,8 @@ export const StateContextProvider = ({ children }) => {
   // const { data } = useContractRead(contract, "isAdminExist", [account])
   const isAdmin = async (account) => {
     try {
-      console.log("address :", account);
-      console.log("contract admin", contractAdmin);
+      // console.log("address :", account);
+      // console.log("contract admin", contractAdmin);
       const result = await contractAdmin.call("isAdminExist", [account]);
       return result;
     } catch (error) {
@@ -149,8 +199,10 @@ export const StateContextProvider = ({ children }) => {
 
   const getCampaigns = async () => {
     const campaigns = await contract.call("getCampaigns");
-    const activeCampaigns = campaigns.filter((campaign) => campaign.isReleased === false)
-    console.log("aktif" ,activeCampaigns);
+    const activeCampaigns = campaigns.filter(
+      (campaign) => campaign.isReleased === false
+    );
+    console.log("aktif", activeCampaigns);
     const parsedCampaigns = activeCampaigns.map((campaign, index) => ({
       owner: campaign.owner,
       title: campaign.title,
@@ -185,6 +237,8 @@ export const StateContextProvider = ({ children }) => {
         getCampaigns,
         rejectCampaign,
         releaseFundCampaign,
+        addItem: addRewards,
+        addMetadata : addMetaDataEcoSaverNFT,
       }}
     >
       {children}

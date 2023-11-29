@@ -47,11 +47,11 @@ const DashboardAdmin = () => {
 
   const handleAccept = async (pId) => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       await approveCampaign(pId);
       const updateCampaigns = await getCampaigns();
       setCampaigns(updateCampaigns);
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (err) {
       console.error("error", err);
     }
@@ -59,9 +59,9 @@ const DashboardAdmin = () => {
 
   const handleReject = async (pId) => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       await rejectCampaign(pId);
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (err) {
       console.error("error", err);
     }
@@ -69,7 +69,7 @@ const DashboardAdmin = () => {
   // console.log("isUserAdmin : ", isUserAdmin);
   return (
     <div className="container mx-auto p-4 ">
-      {isLoading && <Loader/>}
+      {isLoading && <Loader />}
       {isUserAdmin ? (
         <div>
           <h1 className="text-2xl font-bold mb-4 text-white">
