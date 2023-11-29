@@ -44,15 +44,20 @@ const rewardsAddRewards = () => {
     });
   };
 
+  const handleMetaData = (fieldMetadata, event) => {
+    setMetadata({ ...metadata, [fieldMetadata]: event.target.value });
+  };
+
   const handleAddMetaData = async () => {
     try {
-      if(metadata.imgUri && metadata.tokenUri){
-        await addMetadata(metadata)
+      if (metadata.imgUri && metadata.tokenUri) {
+        await addMetadata(metadata);
+        setMetadata({ imgUri: "", tokenUri: "" });
       }
     } catch (error) {
       console.error("Error adding metadata:", error);
     }
-  }
+  };
 
   const handleNftChange = (value) => {
     setIsNft(value === "yes");
@@ -220,7 +225,7 @@ const rewardsAddRewards = () => {
                     focus:border-tranparent"
                   placeholder="Image URI"
                   value={metadata.imgUri}
-                  onChange={(event) => handleAddMetaData("imgUri", event)}
+                  onChange={(event) => handleMetaData("imgUri", event)}
                 />
               </div>
             </div>
@@ -237,13 +242,14 @@ const rewardsAddRewards = () => {
                     focus:border-tranparent"
                   placeholder="Token URI"
                   value={metadata.tokenUri}
-                  onChange={(event) => handleAddMetaData("tokenUri", event)}
+                  onChange={(event) => handleMetaData("tokenUri", event)}
                 />
                 <button
                   type="submit"
                   className="py-2 px-2 border border-gray-300 rounded-md mt-4
             shadow-md font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2
             bg-sky-600 focus:ring-sky-600"
+                  onClick={handleAddMetaData}
                 >
                   Add Rewards
                 </button>
@@ -262,17 +268,6 @@ const rewardsAddRewards = () => {
             </button>
           </div>
         )}
-
-        {/* <div className="flex justify-center">
-          <button
-            type="submit"
-            className=" py-2 px-2 border border-gray-300 rounded-md mb-4
-            shadow-md font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-            bg-sky-600 focus:ring-sky-600"
-          >
-            Add Rewards
-          </button>
-        </div> */}
       </form>
     </div>
   );

@@ -23,6 +23,10 @@ export const daysLeft = (deadline) => {
 };
 
 export const checkIfImage = (url, callback) => {
+  if (url.startsWith('ipfs://')) {
+    url = 'https://ipfs.io/ipfs/' + url.substring('ipfs://'.length);
+  }
+
   const img = new Image();
   img.src = url;
 
@@ -31,3 +35,4 @@ export const checkIfImage = (url, callback) => {
   img.onload = () => callback(true);
   img.onerror = () => callback(false);
 };
+
