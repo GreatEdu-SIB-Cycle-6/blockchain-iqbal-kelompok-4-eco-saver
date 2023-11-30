@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
+import Loader from "./Loader";
+
+import { useStateContext } from "../context";
 const RewardsCards = ({
   name,
   description,
@@ -8,9 +11,57 @@ const RewardsCards = ({
   remainingTime,
   image,
   isNft,
+  pId,
+  address,
 }) => {
+  const [rewards, setRewards] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { claimRewards, getShippingHistoryRewards } = useStateContext();
+  const [claimAddress, setClaimAddress] = useState("");
+
+  const handleClaimRewards = async () => {
+    try {
+      setIsLoading(true);
+      await claimRewards(pId, claimAddress);
+      const updateRewards = await getShippingHistoryRewards();
+      console.log("shipping", updateRewards);
+      setRewards(updateRewards);
+
+      setIsLoading(false);
+    } catch (err) {
+      console.error("error", err);
+    }
+  };
+  const getRarity = (rarity) => {
+    switch (rarity) {
+      case "0":
+        return "Common";
+      case "1":
+        return "Rare";
+      case "2":
+        return "Limited";
+      default:
+        return "unknown";
+    }
+  };
+  const rarityLabel = getRarity(rarity);
+
+  const getIsNft = (isNft) => {
+    switch (isNft) {
+      case true:
+        return "NFT";
+      case false:
+        return "Barang Fisik";
+      default:
+        return "unknown";
+    }
+  };
+  const isNFTLabel = getIsNft(isNft);
+  // console.log(image.split("//")[1]);
+
   return (
-    <div className="md:w-[280px] md:h-[480px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d]">
+    <div className="md:w-[280px] md:h-[550px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d]">
+      {isLoading && <Loader />}
       <img
         src={image}
         alt="fund"
@@ -19,7 +70,7 @@ const RewardsCards = ({
       <div className="flex flex-col p-4">
         <div className="flex flex-row items-center mb-[18px]">
           <p className="ml-[2px] font-['Poppins'] font-medium text-[12px] text-[#98f5e1]">
-            Keberlanjutan Lingkungan
+            For Your Rewards
           </p>
         </div>
         <div className="block">
@@ -33,39 +84,48 @@ const RewardsCards = ({
         <div className="flex justify-between flex-wrap mt-[15px] gap-2">
           <div className="flex flex-col">
             <h4 className="font-['Poppins'] font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">
-              {rarity}
+              {rarityLabel}
             </h4>
             <p
               className="mt-[3px] font-['Poppins'] font-normal text-[12px] leading-[18px] text-[#808191]
             sm:max-w-[120px] truncate"
             >
-              Days left
+              Rarity
             </p>
           </div>
           <div className="flex flex-col">
             <h4 className="font-['Poppins'] font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">
-              {minAmount}
+              {minAmount} BSC
             </h4>
             <p
               className="mt-[3px] font-['Poppins'] font-normal text-[12px] leading-[18px] text-[#808191]
             sm:max-w-[120px] truncate"
             >
-              Raised of <b className="text-white">{remainingTime}</b>
+              Minimal Donation <b className="text-white">{remainingTime}</b>
             </p>
           </div>
         </div>
 
-        <div className="flex items-center mt-[20px] gap-[12px]">
-          <div className="w-[30px] h-[30px] rounded-full flex justify-center items-center bg=[#13131a]">
-            <img
-              src="https://seeklogo.com/images/R/Republic_of_Indonesia_Flag-logo-3E5321CC56-seeklogo.com.png"
-              alt="user"
-              className="w-1/2 h-1/2 object-contain "
-            />
-          </div>
+        <div className="flex items-center mt-[20px] gap-[12px] ">
           <p className="font-['Poppins'] flex-1 font-normal text-[12px] text-[#808191] truncate">
-            <span className="text-white">{isNft}</span>
+            <span className="text-white">{isNFTLabel}</span>
           </p>
+          <div>
+            <input
+              type="text"
+              placeholder="Enter Your Address"
+              value={claimAddress}
+              onChange={(e) => setClaimAddress(e.target.value)}
+              className="px-2 py-1 mr-2 border border-gray-400 rounded focus:outline-none mb-3"
+            />
+            <button
+              className="bg-green-500 text-white px-4 py-2 mr-2 rounded mb-4"
+              // onClick={handleClaimRewards}
+              onClick={() => handleClaimRewards(rewards.pId, rewards.address)}
+            >
+              Claim Rewards
+            </button>
+          </div>
         </div>
       </div>
     </div>

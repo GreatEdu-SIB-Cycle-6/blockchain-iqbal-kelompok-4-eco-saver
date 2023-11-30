@@ -18,7 +18,6 @@ const Rewards = () => {
   const fetchRewards = async () => {
     setIsLoading(true);
     const data = await getRewardsList();
-    console.log("rewadr fetch", data);
     setRewards(data);
     setIsLoading(false);
   };
@@ -28,7 +27,9 @@ const Rewards = () => {
   }, [address, contractRewards, contractEcoSaverNFT, contract]);
 
   return (
-    <DisplayRewards title="Rewards" isLoading={isLoading} rewards={rewards} />
+    <div>
+      <DisplayRewards title="Rewards" isLoading={isLoading} rewards={rewards} />
+    </div>
   );
 };
 

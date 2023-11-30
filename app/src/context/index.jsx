@@ -5,6 +5,7 @@ import {
   useContract,
   useMetamask,
   useContractWrite,
+  useContractRead,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
 
@@ -58,6 +59,21 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
+  const getShippingHistoryRewards = async () => {
+    const rewardsHistory = await contractRewards.call("getShippingHistory");
+    const parsedRewards = rewardsHistory.map((historyRewards, index) => ({
+      name: historyRewards.name,
+      description: historyRewards.description,
+      rarity: historyRewards.rarity,
+      minAmount: historyRewards.minAmount,
+      remaintingItem: historyRewards.remaintingItem,
+      image: historyRewards.image,
+      isNft: historyRewards.isNft,
+      pId: index,
+    }));
+    return parsedRewards;
+  };
+
   const getRequestList = async () => {
     const campaigns = await contract.call("getRequestList");
     const parsedCampaigns = campaigns.map((campaign, index) => ({
@@ -81,18 +97,25 @@ export const StateContextProvider = ({ children }) => {
   const getRewardsList = async () => {
     const rewards = await contractRewards.call("getRewardList");
     const parsedRewards = rewards.map((reward, index) => ({
-      name : reward.name,
-      description : reward.description,
-      rarity : reward.rarity.toString(),
-      minAmount : ethers.utils.formatEther(reward.minAmount.toString()),
-      // remaintingItem : ethers.utils.formatEther(reward.remaintingItem.toString()),
-      remaintingItem : reward.remaintingItem,
-      image : reward.image,
-      isNft : reward.isNft,
-      pId : index,
-    }))
+      name: reward.name,
+      description: reward.description,
+      rarity: reward.rarity.toString(),
+      minAmount: ethers.utils.formatEther(reward.minAmount.toString()),
+      remaintingItem: reward.remaintingItem,
+      image: reward.image,
+      isNft: reward.isNft,
+      pId: index,
+    }));
     return parsedRewards;
-  }
+  };
+
+  const getRewardById = async () => {
+    const rewards = await contractRewards.call("getReward");
+    const parsedRewards = rewards.map((index) => ({
+      pId: index,
+    }));
+    return parsedRewards;
+  };
 
   const donate = async (pId, amount) => {
     const etherValue = ethers.utils.parseEther(amount);
@@ -144,6 +167,22 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
+  const { mutateAsync: claimReward } = useContractWrite(
+    contractRewards,
+    "claimReward"
+  );
+
+  const claimRewards = async (pId, address) => {
+    try {
+      console.log("Calling claimRewards with pId:", pId, "and address:", address);
+      const data = await claimReward({ args: [pId, address] });
+      console.info("contract call successs", data);
+    } catch (err) {
+      console.error("contract call failure", err);
+    }
+  };
+
+  
   const { mutateAsync: rejectRequest } = useContractWrite(
     contract,
     "rejectRequest"
@@ -235,6 +274,21 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
+  // const { data } = useContractRead(contractRewards, "getDonatorData", [donator])
+
+  // const getContractRead = async (dataDonator) => {
+  //   try {
+  //     const dataDonatorNumber = await data({
+  //       args : [
+  //         dataDonator.donator
+  //       ]
+  //     })
+  //     return dataDonatorNumber
+  //   } catch (err) {
+  //     console.log('err fetch data donator', err)
+  //   }
+  // }
+
   return (
     <StateContext.Provider
       value={{
@@ -253,6 +307,10 @@ export const StateContextProvider = ({ children }) => {
         addItem: addRewards,
         addMetadata: addMetaDataEcoSaverNFT,
         getRewardsList,
+        claimRewards,
+        getShippingHistoryRewards,
+        getRewardById
+        // getContractRead
       }}
     >
       {children}

@@ -15,8 +15,9 @@ const rewardsAddRewards = () => {
     rarity: 0,
     minAmount: "",
     remaintingItem: "",
+    // rewardsImage : "",
     image: "",
-    isNft: "no",
+    isNft: false,
   });
 
   const [metadata, setMetadata] = useState({
@@ -186,7 +187,7 @@ const rewardsAddRewards = () => {
             <input
               name="isNft"
               type="radio"
-              className="indeterminate:ring-2 indeterminate:ring-red-500 focus:ring-sky-600 h-4 w-4 text-sky-600 border-gray-300
+              className=" focus:ring-sky-600 h-4 w-4 text-sky-600 border-gray-300
               "
               value="yes"
               onChange={(event) => handleNftChange(event.target.value)}
@@ -197,9 +198,7 @@ const rewardsAddRewards = () => {
             <input
               name="isNft"
               type="radio"
-              className="indeterminate:ring-2 indeterminate:ring-red-500 focus:ring-sky-600 h-4 w-4 text-sky-600 border-gray-300"
-              //   value="no"
-              //   onChange={(event) => handleNftChange(event.target.value)}
+              className=" focus:ring-sky-600 h-4 w-4 text-sky-600 border-gray-300"
               value={rewards.isNft}
               onChange={(event) => {
                 handleRewards("isNft", event);
@@ -212,6 +211,8 @@ const rewardsAddRewards = () => {
 
         {isNft ? (
           <div className="pb-[20px]">
+            <div className="flex justify-between items-center">
+            </div>
             <p className="items-center flex justify-center mb-4 text-[20px] text-white">
               Add Metadata
             </p>

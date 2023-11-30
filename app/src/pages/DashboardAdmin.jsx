@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
 
 import UnauthorizedPages from "./UnauthorizedPages";
 import { useStateContext } from "../context";
@@ -9,7 +8,7 @@ const DashboardAdmin = () => {
   const [campaigns, setCampaigns] = useState([]);
   const [isUserAdmin, setIsUserAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const navigate = useNavigate();
+
   const {
     address,
     contract,
@@ -66,7 +65,7 @@ const DashboardAdmin = () => {
       console.error("error", err);
     }
   };
-  // console.log("isUserAdmin : ", isUserAdmin);
+
   return (
     <div className="container mx-auto p-4 ">
       {isLoading && <Loader />}

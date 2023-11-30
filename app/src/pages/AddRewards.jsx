@@ -5,7 +5,7 @@ import { useStateContext } from "../context";
 import UnauthorizedPages from "./UnauthorizedPages";
 
 const AddRewards = () => {
-  const { address, contract, isAdmin, contractAdmin, addRewards } = useStateContext();
+  const { address, contract, isAdmin, contractAdmin} = useStateContext();
   const [isUserAdmin, setIsUserAdmin] = useState(false);
 
   useEffect(() => {
