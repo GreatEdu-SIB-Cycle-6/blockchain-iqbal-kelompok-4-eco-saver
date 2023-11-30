@@ -292,12 +292,12 @@ contract CrowdFunding is Ownable {
     }
 
     // Get all pending request list
-    function getRequestList() external view onlyAdmin returns (Campaign[] memory) {
+    function getRequestList() external view returns (Campaign[] memory) {
         return requestList;
     }
 
     // get request data by Id
-    function getRequest(uint256 _id) external view onlyAdmin returns (Campaign memory) {
+    function getRequest(uint256 _id) external view returns (Campaign memory) {
         return requestList[_id];
     }
 }

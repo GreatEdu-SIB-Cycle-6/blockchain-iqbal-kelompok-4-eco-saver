@@ -8,7 +8,6 @@ const DashboardAdmin = () => {
   const [campaigns, setCampaigns] = useState([]);
   const [isUserAdmin, setIsUserAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
   const {
     address,
     contract,
