@@ -100,6 +100,7 @@ const CampaignDetails = () => {
   return (
     <div>
       {isLoading && <Loader />}
+      <ToastContainer/>
       <div className="md:w-[1200px] w-42 ml-1 md:ml-[110px] flex md:flex-row flex-col mt-10 gap-[30px]">
         <div className="flex-1 flex-col ">
           <img
