@@ -77,7 +77,7 @@ const RewardsCards = ({
   const isNFTLabel = getIsNft(isNft);
 
   const isButtonDisabled = donatorAmount < minAmount;
-  console.log("total donasi" ,donatorAmount);
+  // console.log("total donasi" ,donatorAmount);
 
   return (
     <div className="md:w-[280px] md:h-[580px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d]">
