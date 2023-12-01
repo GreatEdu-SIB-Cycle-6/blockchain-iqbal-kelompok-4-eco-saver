@@ -15,7 +15,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
   };
 
   const filteredCampaign = campaigns.filter((campaign) =>
-    campaign.title.toLowerCase().startsWith(searchTerm.toLowerCase())
+    campaign.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const campaignToDisplay = searchTerm ? filteredCampaign : campaigns;
