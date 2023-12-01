@@ -50,9 +50,9 @@ const RewardsCards = ({
 
   const getIsNft = (isNft) => {
     switch (isNft) {
-      case "yes":
+      case true:
         return "NFT";
-      case "no":
+      case false:
         return "Barang Fisik";
       default:
         return "unknown";
@@ -62,7 +62,7 @@ const RewardsCards = ({
   // console.log(image.split("//")[1]);
 
   return (
-    <div className="md:w-[280px] md:h-[550px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d]">
+    <div className="md:w-[280px] md:h-[580px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d]">
       {isLoading && <Loader />}
 
       <img
@@ -126,7 +126,7 @@ const RewardsCards = ({
               Claim Rewards
             </button>
             <p className="font-['Poppins'] flex-1 font-normal text-[12px] text-[#808191] truncate">
-              <span className="text-white">{isNFTLabel}</span>
+              <span className="text-white font-bold">{isNFTLabel}</span>
             </p>
           </div>
         </div>
