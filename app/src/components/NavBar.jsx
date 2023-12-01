@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ConnectWallet } from "@thirdweb-dev/react";
 import { Link } from "react-router-dom";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { ecosaver } from "../assets";
 
 const NavBar = () => {
   const [nav, setNav] = useState(false);
@@ -25,8 +26,9 @@ const NavBar = () => {
 
   return (
     <div className="flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white">
+      <img src={ecosaver} alt="logo" className="w-10" />
       <Link to="/">
-        <h1 className="w-full text-2xl font-['Poppins'] font-normal text-white mt-1">
+        <h1 className="w-full text-2xl font-['Poppins'] font-normal text-white mt-1 md:mr-[300px]">
           EcoSaver
         </h1>
       </Link>
