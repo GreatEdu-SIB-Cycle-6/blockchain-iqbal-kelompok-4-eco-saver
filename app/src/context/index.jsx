@@ -28,7 +28,7 @@ export const StateContextProvider = ({ children }) => {
     "0x133272720610d669Fa4C5891Ab62a302455585Dd"
   ).contract;
 
-  console.log("contract reward", contractRewards);
+  // console.log("contract reward", contractRewards);
   // console.log("contract nft", contractEcoSaverNFT);
 
   // Write Request Campaign
@@ -108,14 +108,7 @@ export const StateContextProvider = ({ children }) => {
     }));
     return parsedRewards;
   };
-
-  const getRewardById = async () => {
-    const rewards = await contractRewards.call("getReward");
-    const parsedRewards = rewards.map((index) => ({
-      pId: index,
-    }));
-    return parsedRewards;
-  };
+  
 
   const donate = async (pId, amount) => {
     const etherValue = ethers.utils.parseEther(amount);
@@ -140,6 +133,25 @@ export const StateContextProvider = ({ children }) => {
     }
     return parsedDonations;
   };
+
+  // const getDonatorAmount = async (address) => {
+  //   try {
+  //     console.log("aa",address)
+  //     const result = await contractRewards.call("getDonatorData", [address]);
+  //     const numberDonation = donation[0].length;
+
+  //     const parsedDonate = [];
+  //     for(let i = 0; i < numberDonation; i++ ){
+  //       parsedDonate.push({
+  //         donation: ethers.utils.formatEther(getDonations[1][i].toString())
+  //       })
+  //     }
+  //     return result;
+  //   } catch (err) {
+  //     console.log("Error getdonator", err);
+  //   }
+  // };
+
   // const { data } = useContractRead(contract, "isAdminExist", [account])
   const isAdmin = async (account) => {
     try {
@@ -174,7 +186,12 @@ export const StateContextProvider = ({ children }) => {
 
   const claimRewards = async (pId, address) => {
     try {
-      console.log("Calling claimRewards with pId:", pId, "and address:", address);
+      console.log(
+        "Calling claimRewards with pId:",
+        pId,
+        "and address:",
+        address
+      );
       const data = await claimReward({ args: [pId, address] });
       console.info("contract call successs", data);
     } catch (err) {
@@ -182,7 +199,6 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
-  
   const { mutateAsync: rejectRequest } = useContractWrite(
     contract,
     "rejectRequest"
@@ -274,21 +290,6 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
-  // const { data } = useContractRead(contractRewards, "getDonatorData", [donator])
-
-  // const getContractRead = async (dataDonator) => {
-  //   try {
-  //     const dataDonatorNumber = await data({
-  //       args : [
-  //         dataDonator.donator
-  //       ]
-  //     })
-  //     return dataDonatorNumber
-  //   } catch (err) {
-  //     console.log('err fetch data donator', err)
-  //   }
-  // }
-
   return (
     <StateContext.Provider
       value={{
@@ -309,7 +310,8 @@ export const StateContextProvider = ({ children }) => {
         getRewardsList,
         claimRewards,
         getShippingHistoryRewards,
-        getRewardById
+        // getRewardById,
+        // getDonatorAmount,
         // getContractRead
       }}
     >

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Loader from "./Loader";
 
@@ -12,11 +12,13 @@ const RewardsCards = ({
   image,
   isNft,
   pId,
-  address,
 }) => {
   const [rewards, setRewards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { claimRewards, getShippingHistoryRewards } = useStateContext();
+  const {
+    claimRewards,
+    getShippingHistoryRewards,
+  } = useStateContext();
   const [claimAddress, setClaimAddress] = useState("");
 
   const handleClaimRewards = async () => {
@@ -48,9 +50,9 @@ const RewardsCards = ({
 
   const getIsNft = (isNft) => {
     switch (isNft) {
-      case true:
+      case "yes":
         return "NFT";
-      case false:
+      case "no":
         return "Barang Fisik";
       default:
         return "unknown";
@@ -62,6 +64,7 @@ const RewardsCards = ({
   return (
     <div className="md:w-[280px] md:h-[550px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d]">
       {isLoading && <Loader />}
+
       <img
         src={image}
         alt="fund"
@@ -107,9 +110,6 @@ const RewardsCards = ({
         </div>
 
         <div className="flex items-center mt-[20px] gap-[12px] ">
-          <p className="font-['Poppins'] flex-1 font-normal text-[12px] text-[#808191] truncate">
-            <span className="text-white">{isNFTLabel}</span>
-          </p>
           <div>
             <input
               type="text"
@@ -125,6 +125,9 @@ const RewardsCards = ({
             >
               Claim Rewards
             </button>
+            <p className="font-['Poppins'] flex-1 font-normal text-[12px] text-[#808191] truncate">
+              <span className="text-white">{isNFTLabel}</span>
+            </p>
           </div>
         </div>
       </div>

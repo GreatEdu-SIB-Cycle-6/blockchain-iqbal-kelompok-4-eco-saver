@@ -7,7 +7,7 @@ import Loader from "./Loader";
 
 const rewardsAddRewards = () => {
   const { addItem, addMetadata } = useStateContext();
-  const [isNft, setIsNft] = useState(false);
+  const [isImageNft, setIsImageNft] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rewards, setRewards] = useState({
     name: "",
@@ -15,11 +15,9 @@ const rewardsAddRewards = () => {
     rarity: 0,
     minAmount: "",
     remaintingItem: "",
-    // rewardsImage : "",
     image: "",
     isNft: false,
   });
-
   const [metadata, setMetadata] = useState({
     imgUri: "",
     tokenUri: "",
@@ -63,12 +61,13 @@ const rewardsAddRewards = () => {
   };
 
   const handleNftChange = (value) => {
-    setIsNft(value === "yes");
+    setIsImageNft(value === "yes");
+    setRewards({ ...rewards, isNft: value === "yes" });
   };
 
   return (
     <div className="rounded-[10px] font-poppins max-w-4xl mx-auto w-screen flex flex-col items-center justify-center border border-[#14213d]">
-      {isLoading && <Loader/>}
+      {isLoading && <Loader />}
       <div className="my-6">
         <h1 className="text-white text-[40px] font-poppins">
           Add Rewards Dashboard
@@ -116,8 +115,8 @@ const rewardsAddRewards = () => {
           <div className="flex-1">
             <input
               type="number"
-              min="0"
-              step="0.1"
+              // min="0"
+              // step="0.1"
               required
               className="w-full rounded-md appearance-none border border-gray-300
                     py-2 px-2 bg-white text-gray-500 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-600
@@ -141,7 +140,7 @@ const rewardsAddRewards = () => {
               className="w-full rounded-md appearance-none border border-gray-300
                     py-2 px-2 bg-white text-gray-500 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-600
                     focus:border-tranparent"
-              placeholder="Min amount"
+              placeholder="Stock item"
               value={rewards.remaintingItem}
               onChange={(event) => handleRewards("remaintingItem", event)}
             />
@@ -185,7 +184,7 @@ const rewardsAddRewards = () => {
           </div>
           <div className="flex items-center mr-4">
             <input
-              name="isNft"
+              name="isImageNft"
               type="radio"
               className=" focus:ring-sky-600 h-4 w-4 text-sky-600 border-gray-300
               "
@@ -196,23 +195,21 @@ const rewardsAddRewards = () => {
           </div>
           <div className="flex items-center">
             <input
-              name="isNft"
+              name="isImageNft"
               type="radio"
-              className=" focus:ring-sky-600 h-4 w-4 text-sky-600 border-gray-300"
-              value={rewards.isNft}
+              className="focus:ring-sky-600 h-4 w-4 text-sky-600 border-gray-300"
+              value="no"
               onChange={(event) => {
-                handleRewards("isNft", event);
+                handleRewards("image", event);
                 handleNftChange(event.target.value);
               }}
             />
             <label className="ml-1 block text-gray-500">No</label>
           </div>
         </div>
-
-        {isNft ? (
+        {isImageNft ? (
           <div className="pb-[20px]">
-            <div className="flex justify-between items-center">
-            </div>
+            <div className="flex justify-between items-center"></div>
             <p className="items-center flex justify-center mb-4 text-[20px] text-white">
               Add Metadata
             </p>
@@ -244,7 +241,7 @@ const rewardsAddRewards = () => {
                   className="w-full mt-2 rounded-md appearance-none border border-gray-300
                     py-2 px-2 bg-white text-gray-500 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-600
                     focus:border-tranparent"
-                  placeholder="Token URI"
+                  placeholder="ipfs://"
                   value={metadata.tokenUri}
                   onChange={(event) => handleMetaData("tokenUri", event)}
                 />
