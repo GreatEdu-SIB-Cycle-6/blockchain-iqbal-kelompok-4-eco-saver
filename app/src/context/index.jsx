@@ -134,25 +134,16 @@ export const StateContextProvider = ({ children }) => {
     return parsedDonations;
   };
 
-  // const getDonatorAmount = async (address) => {
-  //   try {
-  //     console.log("aa",address)
-  //     const result = await contractRewards.call("getDonatorData", [address]);
-  //     const numberDonation = donation[0].length;
+  const getDonatorAmount = async (donatorData) => {
+    try {
+      const donatorAmount = await contractRewards.call("getDonatorData", [donatorData]);
+      const amountEtherValue = ethers.utils.formatEther(donatorAmount.toString())
+      return amountEtherValue;
+    } catch (err) {
+      console.log("Error getdonator", err);
+    }
+  };
 
-  //     const parsedDonate = [];
-  //     for(let i = 0; i < numberDonation; i++ ){
-  //       parsedDonate.push({
-  //         donation: ethers.utils.formatEther(getDonations[1][i].toString())
-  //       })
-  //     }
-  //     return result;
-  //   } catch (err) {
-  //     console.log("Error getdonator", err);
-  //   }
-  // };
-
-  // const { data } = useContractRead(contract, "isAdminExist", [account])
   const isAdmin = async (account) => {
     try {
       // console.log("address :", account);
@@ -311,7 +302,7 @@ export const StateContextProvider = ({ children }) => {
         claimRewards,
         getShippingHistoryRewards,
         // getRewardById,
-        // getDonatorAmount,
+        getDonatorAmount,
         // getContractRead
       }}
     >
