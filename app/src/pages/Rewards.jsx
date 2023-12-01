@@ -46,7 +46,7 @@ const Rewards = () => {
   return (
     <div>
       <h1 className="text-white md:ml-[120px] ml-11">Total Donate : <strong>{donatorAmount}</strong> BSC</h1>
-      <DisplayRewards title="Rewards" isLoading={isLoading} rewards={rewards} />
+      <DisplayRewards title="For Your Rewards" isLoading={isLoading} rewards={rewards} />
     </div>
   );
 };

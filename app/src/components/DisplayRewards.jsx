@@ -8,10 +8,10 @@ import RewardsCards from "./RewardsCards";
 const DisplayRewards = ({ title, isLoading, rewards }) => {
   return (
     <div className="w-full md:mt-4 mt-5 ml-12 flex flex-col gap-[30px] md:ml-[120px]">
-      <h1 className="font-['Poppins'] text-white font-semibold text-[18px] text-left">
+      <h1 className="font-['Poppins'] text-white font-semibold md:text-[30px] text-[18px] text-left">
         {title}
       </h1>
-      <div className="flex flex-wrap mt-1 gap-[30px]">
+      <div className="flex flex-wrap mb-[10px] gap-[30px]">
         {isLoading &&
           Array.from({ length: 4 }).map((_, index) => (
             <SkeletonLoading key={index} />

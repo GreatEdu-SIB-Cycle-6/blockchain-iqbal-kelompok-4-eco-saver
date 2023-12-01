@@ -36,7 +36,7 @@ const FundingCard = ({
           <p className="mt-[5px] font-['Poppins'] font-normal text-[#808191] text-left leading-[18px] truncate">
             {description}
           </p>
-        </div>
+        </div> 
         <div className="flex justify-between flex-wrap mt-[15px] gap-2">
           <div className="flex flex-col">
             <h4 className="font-['Poppins'] font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">
@@ -46,7 +46,7 @@ const FundingCard = ({
               className="mt-[3px] font-['Poppins'] font-normal text-[12px] leading-[18px] text-[#808191]
             sm:max-w-[120px] truncate"
             >
-              Days left
+              Hari tersisa
             </p>
           </div>
           <div className="flex flex-col">
@@ -57,7 +57,7 @@ const FundingCard = ({
               className="mt-[3px] font-['Poppins'] font-normal text-[12px] leading-[18px] text-[#808191]
             sm:max-w-[120px] truncate"
             >
-              Raised of <b className="text-white">{target}</b>
+              Terkumpul dari <b className="text-white">{target}</b>
             </p>
           </div>
         </div>

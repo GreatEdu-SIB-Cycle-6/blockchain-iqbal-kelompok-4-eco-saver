@@ -81,7 +81,7 @@ const DashboardAdmin = () => {
           <table className="min-w-full border border-gray-300">
             <thead>
               <tr className="text-white">
-                <th className="pr-10 border">No.</th>
+                <th className="py-2 pr-16 border">No.</th>
                 <th className="py-2 px-4 border w-1/6">Requester</th>
                 <th className="py-2 px-4 border w-1/6">Title</th>
                 <th className="py-2 px-4 border w-1/6">Target</th>
@@ -91,7 +91,7 @@ const DashboardAdmin = () => {
             <tbody className="text-white truncate">
               {campaigns.map((campaign, index) => (
                 <tr key={campaign.pId}>
-                  <td className="pl-6 border">{index + 1}.</td>
+                  <td className="py-2 pl-16 border">{index + 1}.</td>
                   <td className="py-2 px-4 border">{campaign.requester}</td>
                   <td className="py-2 px-4 border truncate">
                     {campaign.title}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 import Loader from "./Loader";
 import { toast, ToastContainer } from "react-toastify";
@@ -17,8 +17,14 @@ const RewardsCards = ({
 }) => {
   const [rewards, setRewards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { claimRewards, getShippingHistoryRewards, getDonatorAmount, contract, contractRewards, address } =
-    useStateContext();
+  const {
+    claimRewards,
+    getShippingHistoryRewards,
+    getDonatorAmount,
+    contract,
+    contractRewards,
+    address,
+  } = useStateContext();
   const [claimAddress, setClaimAddress] = useState("");
   const [donatorAmount, setdonatorAmount] = useState(0);
 
@@ -27,15 +33,15 @@ const RewardsCards = ({
       try {
         const amountDonate = await getDonatorAmount(donatorData);
         setdonatorAmount(amountDonate);
-      } catch (err){
-        console.log("Error data fetch donator", err)
+      } catch (err) {
+        console.log("Error data fetch donator", err);
       }
-    }
-    if(contract || contractRewards) {
+    };
+    if (contract || contractRewards) {
       // console.log("Contract ini ada!")
       fetchDonator(address);
     }
-  }, [contract, contractRewards])
+  }, [contract, contractRewards]);
 
   const handleClaimRewards = async () => {
     try {
@@ -130,16 +136,17 @@ const RewardsCards = ({
           <div>
             <input
               type="text"
-              placeholder="Enter Your Address"
+              placeholder="Enter your address"
               value={claimAddress}
               onChange={(e) => setClaimAddress(e.target.value)}
-              className="px-2 py-1 mr-2 border border-gray-400 rounded focus:outline-none mb-3"
+              className="px-2 py-1 mr-2 border border-gray-400 rounded-[10px] focus:outline-none mb-3"
             />
             <button
-              // className="bg-green-500 text-white px-2 py-2 mr-2 rounded mb-4"
               onClick={() => handleClaimRewards(rewards.pId, rewards.address)}
-              className={`bg-green-500  text-white px-2 py-2 mr-2 rounded mb-4 ${
-                isButtonDisabled ? "bg-gray-500 opacity-75 cursor-not-allowed" : "hover:bg-green-400"
+              className={`bg-green-500 text-white px-2 py-2 mr-2 rounded mb-4 ${
+                isButtonDisabled
+                  ? "bg-gray-600 opacity-75 cursor-not-allowed"
+                  : "hover:bg-green-400"
               }`}
               disabled={isButtonDisabled}
             >

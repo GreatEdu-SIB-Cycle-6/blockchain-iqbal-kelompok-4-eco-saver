@@ -5,7 +5,6 @@ import {
   useContract,
   useMetamask,
   useContractWrite,
-  useContractRead,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
 
@@ -21,7 +20,7 @@ export const StateContextProvider = ({ children }) => {
   ).contract;
 
   const contractRewards = useContract(
-    "0x29DF0c1BB7710Ef0fBCab73315ee8FdDa73250B4 "
+    "0x29DF0c1BB7710Ef0fBCab73315ee8FdDa73250B4"
   ).contract;
 
   const contractEcoSaverNFT = useContract(
