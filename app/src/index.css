@@ -5,6 +5,7 @@
 
 body {
   background-color: #000b22;
+  overflow-x: hidden;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {

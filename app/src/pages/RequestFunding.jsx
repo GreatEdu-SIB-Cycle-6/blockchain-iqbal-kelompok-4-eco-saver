@@ -5,8 +5,8 @@ import { ethers } from "ethers";
 import { useStateContext } from "../context";
 import { checkIfImage } from "../utils";
 import { FormField, CustomButton, Loader } from "../components";
-import {toast, ToastContainer} from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RequestFunding = () => {
   const navigate = useNavigate();
@@ -28,14 +28,13 @@ const RequestFunding = () => {
     event.preventDefault();
 
     checkIfImage(form.image, async (exist) => {
-      if (exist) {  
+      if (exist) {
         setIsLoading(true);
         await requestCampaign({
           ...form,
           target: ethers.utils.parseUnits(form.target, 18),
         });
         setIsLoading(false);
-        toast.success("Request Funding Success, wait for Admin to Accept the Request!")
         navigate("/campaign");
       } else {
         alert("Masukkan link gambar yang valid!");
@@ -44,10 +43,12 @@ const RequestFunding = () => {
     });
   };
 
+  const notifySuccess = () => toast("Request Funding Success, wait for Admin to Accept the Request!")
+
   return (
     <div className="max-w-[1000px] mx-auto border-solid border-2 border-[#14213d] flex flex-col rounded-[10px] sm:p-10 p-4 md:items-center md:justify-center">
-      {isLoading && <Loader/>}
       <ToastContainer />
+      {isLoading && <Loader />}
       <div className="flex justify-center items-center p-[16px] sm:min-w-[150px] bg-transparent border-[#22223b] border rounded-[10px]">
         <h1 className="font-['Poppins'] item-start font-medium text-white sm:text-[25px] text-[21px] leading-[38px]">
           Start Request Funding
@@ -108,6 +109,7 @@ const RequestFunding = () => {
             btnType="submit"
             title="Request Campaign"
             styles="bg-transparent border border-[#52b788] hover:bg-[#52b788] text-white"
+            handleClick={notifySuccess}
           />
         </div>
       </form>

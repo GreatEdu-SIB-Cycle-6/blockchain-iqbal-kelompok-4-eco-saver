@@ -13,19 +13,19 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
-    "0xc6DD0083c7dfE1fB2c8f658753e100bBe10859C4"
+    "0x36f9fAC2268f7Debe5D6D22dB00936545CBa23b6"
   );
 
   const contractAdmin = useContract(
-    "0x8Da107637428A1D4E5FACD84cB93225EFEc78108"
+    "0xE4715aBADB71EeB176aAcd03501961fb26b98Dfd"
   ).contract;
 
   const contractRewards = useContract(
-    "0x1fD79A9D58C911032A1cF6eD41318219044DbF42"
+    "0x29DF0c1BB7710Ef0fBCab73315ee8FdDa73250B4 "
   ).contract;
 
   const contractEcoSaverNFT = useContract(
-    "0x133272720610d669Fa4C5891Ab62a302455585Dd"
+    "0xD246E22cdE2621C3c10FB12E13a647B30B735De1"
   ).contract;
 
   // console.log("contract reward", contractRewards);

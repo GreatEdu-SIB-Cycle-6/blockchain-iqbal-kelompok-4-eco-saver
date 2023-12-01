@@ -122,12 +122,12 @@ const CampaignDetails = () => {
           </div>
         </div>
         <div className="flex md:w-[150px] md:px-1 px-4 w-full flex-wrap justify-between gap-[30px]">
-          <CountBox title="Days left" value={remainingDays} />
+          <CountBox title="Hari Tersisa" value={remainingDays} />
           <CountBox
-            title={`Raised of ${state.target}`}
+            title={`Terkumpul dari target ${state.target} BSC`}
             value={state.amountCollected}
           />
-          <CountBox title="Total Backers" value={donators.length} />
+          <CountBox title="Total Pendukung" value={donators.length} />
         </div>
       </div>
 
@@ -138,7 +138,7 @@ const CampaignDetails = () => {
               className="font-['Poppins'] font-bold text-[18px] text-white
         uppercase"
             >
-              Creator
+              Pembuat Donasi
             </h4>
             <div className="md:mt-[20px] flex flex-row items-center flex-wrap gap-[14px]">
               <div
@@ -170,7 +170,7 @@ const CampaignDetails = () => {
               className="font-['Poppins'] font-bold text-[16px] text-white
         uppercase"
             >
-              Title
+              Judul Acara
             </h4>
             <div className="mt-[20px]">
               <p
@@ -186,7 +186,7 @@ const CampaignDetails = () => {
               className="font-['Poppins'] font-bold text-[16px] text-white
         uppercase"
             >
-              Story
+              Deskripsi Acara
             </h4>
             <div className="mt-[20px]">
               <p
@@ -203,7 +203,7 @@ const CampaignDetails = () => {
               className="font-['Poppins'] font-bold text-[18px] text-white
         uppercase"
             >
-              Donators
+              List para donator
             </h4>
             <div className="mt-[20px] flex flex-col gap-4">
               {donators.length > 0 ? (
@@ -234,14 +234,14 @@ const CampaignDetails = () => {
             className="font-['Poppins'] font-bold text-[18px] text-white
         uppercase"
           >
-            Fund
+            Donasi
           </h4>
           <div className="mt-[20px] flex flex-col p-4 bg-[#1c1c24] rounded-[10px]">
             <p
               className="font-['Poppins'] font-medium text-[20px] leading-[30px] text-center text-[#808191]
             "
             >
-              Fund the campaign
+              Donasikan acara ini
             </p>
             <div className="mt-[30px]">
               <input
@@ -259,18 +259,17 @@ const CampaignDetails = () => {
               />
               <div className="my-[20px] p-4 bg-[#13131a] rounded-[10px]">
                 <h4 className="font-['Poppins'] font-semibold text-[14px] leading-[22px] text-white">
-                  Back it because you believe in it.
+                  Jika kamu peduli, maka teruslah berdonasi & berkontribusi ke acara yang diselenggarakan.
                 </h4>
                 <p className="mt-[20px] font-['Poppins'] font-normal leading-[22px] text-[#808191] ">
-                  Please Support the project for the environmental
-                  sustainability
+                  Dukung acara ini untuk keberlanjutan lingkungan!
                 </p>
               </div>
               {isUserAdmin ? (
                 <div>
                   <ReleaseButton
                     btnType="button"
-                    title="Release Fund"
+                    title="Rilis Uang Donasi"
                     styles="w-full bg-[#3f37c9]"
                     handleClick={handleRelease}
                   />
@@ -279,7 +278,7 @@ const CampaignDetails = () => {
                 <div>
                   <CustomButton
                     btnType="button"
-                    title="Fund Campaign"
+                    title="Donasi"
                     styles="w-full bg-[#8c6dfd]"
                     handleClick={handleDonate}
                   />
