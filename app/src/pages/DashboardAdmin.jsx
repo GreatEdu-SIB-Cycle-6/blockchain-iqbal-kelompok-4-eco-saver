@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import UnauthorizedPages from "./UnauthorizedPages";
 import { useStateContext } from "../context";
 import { Loader } from "../components";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DashboardAdmin = () => {
   const [campaigns, setCampaigns] = useState([]);
@@ -50,6 +52,7 @@ const DashboardAdmin = () => {
       const updateCampaigns = await getCampaigns();
       setCampaigns(updateCampaigns);
       setIsLoading(false);
+      toast.success("Accept Request Success");
     } catch (err) {
       console.error("error", err);
     }
@@ -60,6 +63,7 @@ const DashboardAdmin = () => {
       setIsLoading(true);
       await rejectCampaign(pId);
       setIsLoading(false);
+      toast.success("Reject Request Success");
     } catch (err) {
       console.error("error", err);
     }
@@ -67,6 +71,7 @@ const DashboardAdmin = () => {
 
   return (
     <div className="container mx-auto p-4 ">
+      <ToastContainer />
       {isLoading && <Loader />}
       {isUserAdmin ? (
         <div>

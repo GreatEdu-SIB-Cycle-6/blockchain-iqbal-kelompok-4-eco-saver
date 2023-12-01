@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useStateContext } from "../context";
 import { ethers } from "ethers";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { checkIfImage } from "../utils";
 import Loader from "./Loader";
@@ -38,6 +40,7 @@ const rewardsAddRewards = () => {
           minAmount: ethers.utils.parseUnits(rewards.minAmount, 18),
         });
         setIsLoading(false);
+        toast.success("Success Add Rewards! ");
       } else {
         alert("Masukkan link gambar yang valid!");
         setRewards({ ...rewards, image: "" });
@@ -68,6 +71,7 @@ const rewardsAddRewards = () => {
   return (
     <div className="rounded-[10px] font-poppins max-w-4xl mx-auto w-screen flex flex-col items-center justify-center border border-[#14213d]">
       {isLoading && <Loader />}
+      <ToastContainer />
       <div className="my-6">
         <h1 className="text-white text-[40px] font-poppins">
           Add Rewards Dashboard

@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useStateContext } from "../context";
 import { CustomButton, CountBox, Loader, ReleaseButton } from "../components";
 import { calculateBarPercentage, daysLeft } from "../utils";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const CampaignDetails = () => {
   const { state } = useLocation();
@@ -38,6 +40,7 @@ const CampaignDetails = () => {
 
     await releaseFundCampaign(state.pId, amount);
     setIsLoading(false);
+    toast.success("Release Fund Success")
   };
 
   useEffect(() => {
@@ -51,6 +54,7 @@ const CampaignDetails = () => {
     navigate("/");
 
     setIsLoading(false);
+    toast.success("Success Donate Campaign")
   };
 
   useEffect(() => {

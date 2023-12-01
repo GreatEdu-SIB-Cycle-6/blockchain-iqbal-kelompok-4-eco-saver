@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import Loader from "./Loader";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { useStateContext } from "../context";
 const RewardsCards = ({
@@ -15,10 +17,7 @@ const RewardsCards = ({
 }) => {
   const [rewards, setRewards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const {
-    claimRewards,
-    getShippingHistoryRewards,
-  } = useStateContext();
+  const { claimRewards, getShippingHistoryRewards } = useStateContext();
   const [claimAddress, setClaimAddress] = useState("");
 
   const handleClaimRewards = async () => {
@@ -28,8 +27,8 @@ const RewardsCards = ({
       const updateRewards = await getShippingHistoryRewards();
       console.log("shipping", updateRewards);
       setRewards(updateRewards);
-
       setIsLoading(false);
+      toast.success("Claim Rewards Success!");
     } catch (err) {
       console.error("error", err);
     }
@@ -64,7 +63,7 @@ const RewardsCards = ({
   return (
     <div className="md:w-[280px] md:h-[580px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d]">
       {isLoading && <Loader />}
-
+      <ToastContainer />
       <img
         src={image}
         alt="fund"
@@ -119,8 +118,7 @@ const RewardsCards = ({
               className="px-2 py-1 mr-2 border border-gray-400 rounded focus:outline-none mb-3"
             />
             <button
-              className="bg-green-500 text-white px-4 py-2 mr-2 rounded mb-4"
-              // onClick={handleClaimRewards}
+              className="bg-green-500 text-white px-2 py-2 mr-2 rounded mb-4"
               onClick={() => handleClaimRewards(rewards.pId, rewards.address)}
             >
               Claim Rewards
