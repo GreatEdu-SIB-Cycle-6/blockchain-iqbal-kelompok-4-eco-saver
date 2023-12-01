@@ -27,7 +27,7 @@ const Rewards = () => {
       }
     }
     if(contract || contractRewards) {
-      console.log("Contract ini ada!")
+      // console.log("Contract ini ada!")
       fetchDonator(address);
     }
   }, [contract, contractRewards])

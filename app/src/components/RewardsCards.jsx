@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 
 import Loader from "./Loader";
 import { toast, ToastContainer } from "react-toastify";
@@ -17,15 +17,32 @@ const RewardsCards = ({
 }) => {
   const [rewards, setRewards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { claimRewards, getShippingHistoryRewards } = useStateContext();
+  const { claimRewards, getShippingHistoryRewards, getDonatorAmount, contract, contractRewards, address } =
+    useStateContext();
   const [claimAddress, setClaimAddress] = useState("");
+  const [donatorAmount, setdonatorAmount] = useState(0);
+
+  useEffect(() => {
+    const fetchDonator = async (donatorData) => {
+      try {
+        const amountDonate = await getDonatorAmount(donatorData);
+        setdonatorAmount(amountDonate);
+      } catch (err){
+        console.log("Error data fetch donator", err)
+      }
+    }
+    if(contract || contractRewards) {
+      // console.log("Contract ini ada!")
+      fetchDonator(address);
+    }
+  }, [contract, contractRewards])
 
   const handleClaimRewards = async () => {
     try {
       setIsLoading(true);
       await claimRewards(pId, claimAddress);
       const updateRewards = await getShippingHistoryRewards();
-      console.log("shipping", updateRewards);
+      // console.log("shipping", updateRewards);
       setRewards(updateRewards);
       setIsLoading(false);
       toast.success("Claim Rewards Success!");
@@ -58,7 +75,9 @@ const RewardsCards = ({
     }
   };
   const isNFTLabel = getIsNft(isNft);
-  // console.log(image.split("//")[1]);
+
+  const isButtonDisabled = donatorAmount < minAmount;
+  console.log("total donasi" ,donatorAmount);
 
   return (
     <div className="md:w-[280px] md:h-[580px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d]">
@@ -107,7 +126,6 @@ const RewardsCards = ({
             </p>
           </div>
         </div>
-
         <div className="flex items-center mt-[20px] gap-[12px] ">
           <div>
             <input
@@ -118,8 +136,12 @@ const RewardsCards = ({
               className="px-2 py-1 mr-2 border border-gray-400 rounded focus:outline-none mb-3"
             />
             <button
-              className="bg-green-500 text-white px-2 py-2 mr-2 rounded mb-4"
+              // className="bg-green-500 text-white px-2 py-2 mr-2 rounded mb-4"
               onClick={() => handleClaimRewards(rewards.pId, rewards.address)}
+              className={`bg-green-500  text-white px-2 py-2 mr-2 rounded mb-4 ${
+                isButtonDisabled ? "bg-gray-500 opacity-75 cursor-not-allowed" : "hover:bg-green-400"
+              }`}
+              disabled={isButtonDisabled}
             >
               Claim Rewards
             </button>
