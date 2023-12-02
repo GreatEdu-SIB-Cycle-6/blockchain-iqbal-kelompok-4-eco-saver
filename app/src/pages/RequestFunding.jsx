@@ -41,9 +41,8 @@ const RequestFunding = () => {
         setForm({ ...form, image: "" });
       }
     });
+    toast("Request Funding Success!, Wait for Admin to Accept the Request!")
   };
-
-  const notifySuccess = () => toast("Request Funding Success, wait for Admin to Accept the Request!")
 
   return (
     <div className="max-w-[1000px] mx-auto border-solid border-2 border-[#14213d] flex flex-col rounded-[10px] sm:p-10 p-4 md:items-center md:justify-center">
@@ -109,7 +108,6 @@ const RequestFunding = () => {
             btnType="submit"
             title="Request Campaign"
             styles="bg-transparent border border-[#52b788] hover:bg-[#52b788] text-white"
-            handleClick={notifySuccess}
           />
         </div>
       </form>

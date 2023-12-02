@@ -25,7 +25,7 @@ const DashboardAdmin = () => {
     const fetchCampaigns = async (account) => {
       try {
         const UserisAdmin = await isAdmin(account);
-        console.log("userIsAdmin", UserisAdmin);
+        // console.log("userIsAdmin", UserisAdmin);
         if (UserisAdmin) {
           setIsUserAdmin(true);
           const data = await getRequestList();
@@ -38,7 +38,7 @@ const DashboardAdmin = () => {
       }
     };
     if (contract || contractAdmin) {
-      console.log("contract available");
+      // console.log("contract available");
       if (address != undefined) {
         fetchCampaigns(address);
       }
@@ -81,7 +81,7 @@ const DashboardAdmin = () => {
           <table className="min-w-full border border-gray-300">
             <thead>
               <tr className="text-white">
-                <th className="py-2 pr-16 border">No.</th>
+                <th className="py-2 px-4 border">No.</th>
                 <th className="py-2 px-4 border w-1/6">Requester</th>
                 <th className="py-2 px-4 border w-1/6">Title</th>
                 <th className="py-2 px-4 border w-1/6">Target</th>
@@ -96,7 +96,7 @@ const DashboardAdmin = () => {
                   <td className="py-2 px-4 border truncate">
                     {campaign.title}
                   </td>
-                  <td className="py-2 px-4 border">{campaign.target}</td>
+                  <td className="py-2 px-4 border">{campaign.target} BSC</td>
                   <td className="py-2 px-4 border-b">
                     <button
                       className="bg-green-500 text-white px-4 py-2 mr-2 rounded"

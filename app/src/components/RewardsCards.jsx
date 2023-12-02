@@ -59,11 +59,12 @@ const RewardsCards = ({
   const getRarity = (rarity) => {
     switch (rarity) {
       case "0":
-        return "Common";
+        return <p className="text-2xl text-gray-400">Common</p>;
       case "1":
-        return "Rare";
+        return <p className="text-2xl text-amber-500">Rare</p>;
       case "2":
-        return "Limited";
+        return <p className="text-2xl font-bold bg-gradient-to-r from-red-500 via-yellow-500
+        to-green-500 bg-clip-text text-transparent">Limited</p>;
       default:
         return "unknown";
     }
@@ -121,7 +122,7 @@ const RewardsCards = ({
             </p>
           </div>
           <div className="flex flex-col">
-            <h4 className="font-['Poppins'] font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">
+            <h4 className="font-['Poppins'] font-semibold text-[14px] text-white leading-[22px]">
               {minAmount} BSC
             </h4>
             <p
