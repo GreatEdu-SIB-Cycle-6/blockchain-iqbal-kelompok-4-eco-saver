@@ -146,7 +146,7 @@ const RewardsCards = ({
               onClick={() => handleClaimRewards(rewards.pId, rewards.address)}
               className={`bg-green-500 text-white px-2 py-2 mr-2 rounded mb-4 ${
                 isButtonDisabled
-                  ? "bg-gray-600 opacity-75 cursor-not-allowed"
+                  ? "sm:bg-gray-600 opacity-75 cursor-not-allowed"
                   : "hover:bg-green-400"
               }`}
               disabled={isButtonDisabled}

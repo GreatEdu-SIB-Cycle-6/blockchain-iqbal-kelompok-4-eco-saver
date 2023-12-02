@@ -3,7 +3,7 @@ import React from "react";
 const About = () => {
   return (
     <div className="max-w-[1200px] mt-[-60px] md:mt-[-120px] w-full h-screen mx-auto text-left flex flex-col justify-center">
-      <h1 className="mt-3 text-[30px] md:text-[40px] p-5 md:p-3 font-normal text-white font-['Poppins']">
+      <h1 className="mt-[19px] text-[30px] md:text-[40px] p-5 md:p-3 font-normal text-white font-['Poppins']">
         What is EcoSaver?
       </h1>
       <article className='md:text-[20px] text-white font-light p-5 font-["Poppins"]'>
