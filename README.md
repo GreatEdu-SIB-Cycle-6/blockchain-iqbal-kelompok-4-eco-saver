@@ -54,6 +54,8 @@ Technologies used in the project:
 * [React](https://react.dev/)
 * [Tailwind CSS](https://tailwindcss.com/)
 * [Node.js](https://nodejs.org/en)
+* [Mocha](https://mochajs.org/)
+* [Chai](https://www.chaijs.com/)
 * [thirdweb](https://thirdweb.com/)
 
 ## Getting Started
