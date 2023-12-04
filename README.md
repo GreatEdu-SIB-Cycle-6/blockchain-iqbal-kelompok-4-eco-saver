@@ -146,7 +146,7 @@ You can run this project locally to try it out.
 ## Features
 1. User Request Funding (User hanya bisa 1x Request saja, ketika user ingin request campaign lagi, request user tidak akan masuk ke dashboard admin)
 2. 401 Unauthorized Pages (Ketika User Masuk ke Dashboard Admin dan Add Rewards)
-3. Dashboard Admin
+3. Dashboard Admin (Untuk Accept/Reject Request Funding)
 4. Accept Request Funding (Only Admin)
 5. Reject Request Funding (Only Admin)
 6. Search Campaign
@@ -154,11 +154,12 @@ You can run this project locally to try it out.
 8. User Donate Campaign & Lihat Address User terdapat di campaign tersebut
 9. Admin Release Dana Campaign (Ketika admin sudah release dana campaign, maka otomatis campaign yang sudah di release menghilang dari pages campaign)
 10. Admin mendapatkan Fee 5% yang masuk ke Dana Admin Contract.
-11. Add rewards NFT (Only Admin)
-12. Add Rewards Barang Fisik (Only Admin)
-13. Claim Rewards ( NFT )
-14. Claim Rewards ( Bukan NFT )
-15. Menu About
+11. Dashboard Add Rewards (Only Admin)
+12. Add rewards NFT (Only Admin)
+13. Add Rewards Barang Fisik (Only Admin)
+14. Claim Rewards ( NFT )
+15. Claim Rewards ( Bukan NFT )
+16. Menu About
 
 
 ## Authors
