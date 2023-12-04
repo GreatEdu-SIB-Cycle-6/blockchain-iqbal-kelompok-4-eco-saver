@@ -143,5 +143,23 @@ You can run this project locally to try it out.
    ```
 6. Open `http://localhost:5173`.
 
+## Features
+1. User Request Funding (User hanya bisa 1x Request saja, ketika user ingin request campaign lagi, request user tidak akan masuk ke dashboard admin)
+2. 401 Unauthorized Pages (Ketika User Masuk ke Dashboard Admin dan Add Rewards)
+3. Dashboard Admin
+4. Accept Request Funding (Only Admin)
+5. Reject Request Funding (Only Admin)
+6. Search Campaign
+7. Check Rewards (Jika Donasi kurang dari Minimal Donasi di Rewards, maka Tombol Rewards akan disabled)
+8. User Donate Campaign & Lihat Address User terdapat di campaign tersebut
+9. Admin Release Dana Campaign (Ketika admin sudah release dana campaign, maka otomatis campaign yang sudah di release menghilang dari pages campaign)
+10. Admin mendapatkan Fee 5% yang masuk ke Dana Admin Contract.
+11. Add rewards NFT (Only Admin)
+12. Add Rewards Barang Fisik (Only Admin)
+13. Claim Rewards ( NFT )
+14. Claim Rewards ( Bukan NFT )
+15. Menu About
+
+
 ## Authors
 [harundarat](https://github.com/harundarat/) || [Bimajadivaaa](https://github.com/Bimajadivaaa) || [dinarosaa](https://github.com/dinarosaa) || [HarryBachtiar](https://github.com/HarryBachtiar)
