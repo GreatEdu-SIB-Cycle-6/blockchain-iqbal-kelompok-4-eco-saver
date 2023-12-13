@@ -51,7 +51,7 @@ const CampaignDetails = () => {
     setIsLoading(true);
 
     await donate(state.pId, amount);
-    navigate("/");
+    // navigate("/");
 
     setIsLoading(false);
     toast.success("Success Donate Campaign")

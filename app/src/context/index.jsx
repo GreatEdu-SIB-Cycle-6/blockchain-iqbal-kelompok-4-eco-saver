@@ -95,12 +95,13 @@ export const StateContextProvider = ({ children }) => {
 
   const getRewardsList = async () => {
     const rewards = await contractRewards.call("getRewardList");
-    const parsedRewards = rewards.map((reward, index) => ({
+    const unclaimedRewards = rewards.filter((reward) => reward.remainingItem > 0);
+    const parsedRewards = unclaimedRewards.map((reward, index) => ({
       name: reward.name,
       description: reward.description,
       rarity: reward.rarity.toString(),
       minAmount: ethers.utils.formatEther(reward.minAmount.toString()),
-      remaintingItem: reward.remaintingItem,
+      remainingItem: reward.remainingItem.toNumber(),
       image: reward.image,
       isNft: reward.isNft,
       pId: index,
@@ -222,7 +223,7 @@ export const StateContextProvider = ({ children }) => {
     const activeCampaigns = campaigns.filter(
       (campaign) => campaign.isReleased === false
     );
-    console.log("aktif", activeCampaigns);
+    // console.log("aktif", activeCampaigns);
     const parsedCampaigns = activeCampaigns.map((campaign, index) => ({
       owner: campaign.owner,
       title: campaign.title,

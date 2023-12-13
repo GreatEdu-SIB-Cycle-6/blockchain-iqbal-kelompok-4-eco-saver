@@ -20,6 +20,7 @@ const RequestFunding = () => {
     deadline: "",
     image: "",
   });
+  const [requestSuccess, setRequestSuccess] = useState(false);
 
   const handleFormFieldChange = (fieldName, event) => {
     setForm({ ...form, [fieldName]: event.target.value });
@@ -30,18 +31,23 @@ const RequestFunding = () => {
     checkIfImage(form.image, async (exist) => {
       if (exist) {
         setIsLoading(true);
-        await requestCampaign({
-          ...form,
-          target: ethers.utils.parseUnits(form.target, 18),
-        });
-        setIsLoading(false);
-        navigate("/campaign");
+        try {
+          await requestCampaign({
+            ...form,
+            target: ethers.utils.parseUnits(form.target, 18),
+          });
+          setIsLoading(false);
+          navigate("/campaign");
+        } catch (err) {
+          console.error("Error requesting campaign:", err);
+          setIsLoading(false);
+          toast.error("Request Failed!");
+        }
       } else {
         alert("Masukkan link gambar yang valid!");
         setForm({ ...form, image: "" });
       }
     });
-    toast("Request Funding Success!, Wait for Admin to Accept the Request!")
   };
 
   return (

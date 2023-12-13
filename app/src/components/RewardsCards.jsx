@@ -10,7 +10,7 @@ const RewardsCards = ({
   description,
   rarity,
   minAmount,
-  remainingTime,
+  remainingItem,
   image,
   isNft,
   pId,
@@ -51,9 +51,10 @@ const RewardsCards = ({
       // console.log("shipping", updateRewards);
       setRewards(updateRewards);
       setIsLoading(false);
-      toast.success("Claim Rewards Success!");
+      toast.success("Claim Rewards Success!")
     } catch (err) {
       console.error("error", err);
+      // setIsLoading(false);
     }
   };
   const getRarity = (rarity) => {
@@ -63,8 +64,14 @@ const RewardsCards = ({
       case "1":
         return <p className="text-2xl text-amber-500">Rare</p>;
       case "2":
-        return <p className="text-2xl font-bold bg-gradient-to-r from-red-500 via-yellow-500
-        to-green-500 bg-clip-text text-transparent">Limited</p>;
+        return (
+          <p
+            className="text-2xl font-bold bg-gradient-to-r from-red-500 via-yellow-500
+        to-green-500 bg-clip-text text-transparent"
+          >
+            Limited
+          </p>
+        );
       default:
         return "unknown";
     }
@@ -74,9 +81,10 @@ const RewardsCards = ({
   const getIsNft = (isNft) => {
     switch (isNft) {
       case true:
-        return "NFT";
+        // return <p className="text-red-700">NFT</p>;
+        return <p className="text-red-500">NFT</p>;
       case false:
-        return "Barang Fisik";
+        return <p className="text-blue-500">Barang Fisik</p>;
       default:
         return "unknown";
     }
@@ -87,9 +95,9 @@ const RewardsCards = ({
   // console.log("total donasi" ,donatorAmount);
 
   return (
-    <div className="md:w-[280px] md:h-[580px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d]">
-      {isLoading && <Loader />}
+    <div className="md:w-[280px] md:h-[620px] md:mb-2 w-[290px] rounded-[15px] bg-[#14213d]">
       <ToastContainer />
+      {isLoading && <Loader />}
       <img
         src={image}
         alt="fund"
@@ -129,7 +137,7 @@ const RewardsCards = ({
               className="mt-[3px] font-['Poppins'] font-normal text-[12px] leading-[18px] text-[#808191]
             sm:max-w-[120px] truncate"
             >
-              Minimal Donation <b className="text-white">{remainingTime}</b>
+              Minimal Donation 
             </p>
           </div>
         </div>
@@ -137,8 +145,10 @@ const RewardsCards = ({
           <div>
             <input
               type="text"
-              placeholder="Enter your address"
+              placeholder="Send your contact..."
               value={claimAddress}
+              // hidden= {isNft}
+              disabled={isNft}
               onChange={(e) => setClaimAddress(e.target.value)}
               className="px-2 py-1 mr-2 border border-gray-400 rounded-[10px] focus:outline-none mb-3"
             />
@@ -153,9 +163,12 @@ const RewardsCards = ({
             >
               Claim Rewards
             </button>
-            <p className="font-['Poppins'] flex-1 font-normal text-[12px] text-[#808191] truncate">
+            
+            <div className="font-['Poppins'] flex-1 font-normal text-[12px] text-[#808191] truncate">
               <span className="text-white font-bold">{isNFTLabel}</span>
-            </p>
+              <div className="mt-4">
+                Total Stock : <b className="text-white">{remainingItem} Item</b> </div>
+            </div>
           </div>
         </div>
       </div>
